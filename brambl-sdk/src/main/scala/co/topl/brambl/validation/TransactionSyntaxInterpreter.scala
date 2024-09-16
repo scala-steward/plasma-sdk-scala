@@ -3,6 +3,7 @@ package co.topl.brambl.validation
 import cats.Applicative
 import cats.data.{Chain, NonEmptyChain, Validated, ValidatedNec}
 import cats.implicits._
+import co.topl.brambl.builders.MergingOps
 import co.topl.brambl.common.ContainsImmutable.ContainsImmutableTOps
 import co.topl.brambl.common.ContainsImmutable.instances._
 import co.topl.brambl.models.TransactionOutputAddress
@@ -11,6 +12,7 @@ import co.topl.brambl.models.transaction.{IoTransaction, SpentTransactionOutput,
 import co.topl.brambl.syntax._
 import co.topl.brambl.validation.algebras.TransactionSyntaxVerifier
 import quivr.models.{Int128, Proof, Proposition}
+
 import scala.util.Try
 
 object TransactionSyntaxInterpreter {
@@ -43,7 +45,9 @@ object TransactionSyntaxInterpreter {
       seriesEqualFundsValidation,
       assetNoRepeatedUtxosValidation,
       mintingValidation,
-      updateProposalValidation
+      updateProposalValidation,
+      mergingDistinctValidation,
+      mergingValidation
     )
 
   /**
@@ -240,13 +244,22 @@ object TransactionSyntaxInterpreter {
     )
 
   /**
-   * AssetEqualFundsValidation For each asset: input assets + minted assets == output asset
+   * AssetEqualFundsValidation For each asset: input assets + minted assets - merging inputs == output asset - merged outputs
    * @param transaction - transaction
    * @return
    */
   private def assetEqualFundsValidation(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] = {
-    val inputAssets = transaction.inputs.filter(_.value.value.isAsset).map(_.value.value)
-    val outputAssets = transaction.outputs.filter(_.value.value.isAsset).map(_.value.value)
+    val inputAssets = transaction.inputs
+      .filterNot(in =>
+        transaction.mergingStatements.flatMap(_.inputUtxos).contains(in.address)
+      ) // ignoring merging inputs
+      .filter(_.value.value.isAsset)
+      .map(_.value.value)
+    val outputAssets = transaction.outputs.zipWithIndex
+      .filterNot(out => transaction.mergingStatements.map(_.outputIdx).contains(out._2)) // ignoring merged outputs
+      .map(_._1)
+      .filter(_.value.value.isAsset)
+      .map(_.value.value)
 
     def groupGivenMintedStatements(stm: AssetMintingStatement) =
       transaction.inputs
@@ -589,4 +602,105 @@ object TransactionSyntaxInterpreter {
 
     Validated.condNec(isValid, (), TransactionSyntaxError.InvalidUpdateProposal(upsOut))
   }
+
+  /**
+   * Validate that the merging inputs are distinct (not re-used in other merging statements)
+   */
+  private def mergingDistinctValidation(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] = {
+    val mergingInputs = transaction.mergingStatements.flatMap(
+      _.inputUtxos.distinct
+    ) // distinct within each merging statement since those duplicates are handled via InvalidMergingStatement
+    val repeatedInputs: Seq[TransactionSyntaxError] = mergingInputs
+      .diff(mergingInputs.distinct)
+      .map(
+        TransactionSyntaxError.NonDistinctMergingInput
+      ) // results with a list of inputs that are present in multiple merging statements
+    NonEmptyChain.fromSeq(repeatedInputs) match {
+      case Some(repeated) => Validated.Invalid(repeated)
+      case None           => ().validNec[TransactionSyntaxError]
+    }
+  }
+
+  /**
+   * Validate that the transaction w.r.t the merging statements is valid AND that the merge operations are syntactically valid
+   */
+  private def mergingValidation(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] =
+    mergingStatementsValidation(transaction).andThen(_ => mergingCompatibilityValidation(transaction))
+
+  /**
+   * Validate that the transaction w.r.t the merging statements is valid
+   */
+  private def mergingStatementsValidation(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] = {
+    type AsmCheck = AssetMergingStatement => Boolean
+    val outputIdxInBounds: AsmCheck = _.outputIdx < transaction.outputs.size
+    val multipleInputs: AsmCheck = _.inputUtxos.length >= 2
+    val allInputsPresent: AsmCheck = _.inputUtxos.forall(input => transaction.inputs.exists(_.address == input))
+    val distinctInputs: AsmCheck = s => s.inputUtxos.distinct.length == s.inputUtxos.length
+
+    def isValidStatement: AsmCheck = s =>
+      Seq(outputIdxInBounds, multipleInputs, allInputsPresent, distinctInputs).forall(_(s))
+
+    val invalidMergingStatements = transaction.mergingStatements.filterNot(isValidStatement)
+    NonEmptyChain.fromSeq(invalidMergingStatements.map(TransactionSyntaxError.InvalidMergingStatement)) match {
+      case Some(repeated) => Validated.Invalid(repeated)
+      case None           => ().validNec[TransactionSyntaxError]
+    }
+  }
+
+  /**
+   * Validate that the merge operations are syntactically valid
+   */
+  private def mergingCompatibilityValidation(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] = {
+    case class MergingValues(inputs: Seq[Value], output: Value)
+    type MergeCheck = MergingValues => Boolean
+    val allAssetInputs: MergeCheck = _.inputs.forall(_.value.isAsset)
+    val assetOutput: MergeCheck = _.output.value.isAsset
+    val sumInputsEqualsOutput: MergeCheck = v =>
+      v.inputs.map(_.getAsset.quantity: BigInt).sum == (v.output.getAsset.quantity: BigInt)
+    val sameQuantityDescriptors: MergeCheck = v =>
+      v.inputs.forall(_.getAsset.quantityDescriptor == v.output.getAsset.quantityDescriptor)
+    val sameFungibility: MergeCheck = v => v.inputs.forall(_.getAsset.fungibility == v.output.getAsset.fungibility)
+
+    val sameSeriesId: MergeCheck = v => v.inputs.forall(_.getAsset.seriesId == v.output.getAsset.seriesId)
+    val noGroupId: MergeCheck = _.output.getAsset.groupId.isEmpty
+    val groupAlloy: MergeCheck = v =>
+      v.output.getAsset.groupAlloy.contains(MergingOps.getAlloy(v.inputs.map(_.getAsset)))
+
+    val sameGroupId: MergeCheck = v => v.inputs.forall(in => in.getAsset.groupId == v.output.getAsset.groupId)
+    val noSeriesId: MergeCheck = _.output.getAsset.seriesId.isEmpty
+    val seriesAlloy: MergeCheck = v =>
+      v.output.getAsset.seriesAlloy.contains(MergingOps.getAlloy(v.inputs.map(_.getAsset)))
+
+    val validFungibility: MergeCheck = {
+      case v if v.output.getAsset.fungibility == FungibilityType.SERIES =>
+        Seq(sameSeriesId, noGroupId, groupAlloy).forall(_(v))
+      case v if v.output.getAsset.fungibility == FungibilityType.GROUP =>
+        Seq(sameGroupId, noSeriesId, seriesAlloy).forall(_(v))
+      case _ => false // GROUP_AND_SERIES is not allowed to merge
+    }
+
+    def isValidMerge: MergeCheck = v =>
+      Seq(
+        allAssetInputs,
+        assetOutput,
+        sumInputsEqualsOutput,
+        sameQuantityDescriptors,
+        sameFungibility,
+        validFungibility
+      ).forall(_(v))
+
+    val toMerge = transaction.mergingStatements.map(asm =>
+      MergingValues(
+        asm.inputUtxos.map(input => transaction.inputs.find(_.address == input).get.value),
+        transaction.outputs(asm.outputIdx).value
+      )
+    )
+    NonEmptyChain.fromSeq(
+      toMerge.filterNot(isValidMerge).map(vals => TransactionSyntaxError.IncompatibleMerge(vals.inputs, vals.output))
+    ) match {
+      case Some(repeated) => Validated.Invalid(repeated)
+      case None           => ().validNec[TransactionSyntaxError]
+    }
+  }
+
 }
