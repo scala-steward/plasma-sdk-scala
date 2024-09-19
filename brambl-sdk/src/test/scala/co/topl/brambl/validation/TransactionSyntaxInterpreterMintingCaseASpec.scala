@@ -21,8 +21,8 @@ import co.topl.brambl.syntax._
  */
 class TransactionSyntaxInterpreterMintingCaseASpec extends munit.FunSuite with MockHelpers {
 
-  private val txoAddress_1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-  private val txoAddress_2 = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
+  private val txoAddress_1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+  private val txoAddress_2 = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
 
   test("Valid data-input case 1, minting a Group constructor Token") {
     val groupPolicy = Event.GroupPolicy(label = "groupLabelA", registrationUtxo = txoAddress_1)

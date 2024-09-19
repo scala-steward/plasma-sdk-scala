@@ -20,8 +20,8 @@ import co.topl.brambl.syntax._
  */
 class TransactionSyntaxInterpreterAssetSpec extends munit.FunSuite with MockHelpers {
 
-  private val txoAddress_1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-  private val txoAddress_2 = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
+  private val txoAddress_1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+  private val txoAddress_2 = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
 
   /**
    * Reasons:

@@ -19,10 +19,10 @@ import co.topl.brambl.syntax._
  */
 class TransactionSyntaxInterpreterMintingCaseCSpec extends munit.FunSuite with MockHelpers {
 
-  private val txoAddress_1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-  private val txoAddress_2 = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
-  private val txoAddress_3 = TransactionOutputAddress(3, 0, 0, dummyTxIdentifier)
-  private val txoAddress_4 = TransactionOutputAddress(4, 0, 0, dummyTxIdentifier)
+  private val txoAddress_1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+  private val txoAddress_2 = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
+  private val txoAddress_3 = TransactionOutputAddress(0, 0, 3, dummyTxIdentifier)
+  private val txoAddress_4 = TransactionOutputAddress(0, 0, 4, dummyTxIdentifier)
 
   test("Valid data-input case 1, minting a Asset Token Unlimited") {
     val groupPolicy = Event.GroupPolicy(label = "policyG", registrationUtxo = txoAddress_1)
@@ -805,10 +805,10 @@ class TransactionSyntaxInterpreterMintingCaseCSpec extends munit.FunSuite with M
    */
   test("Invalid data-input case 4, minting a Asset Token Limited") {
 
-    val utxo_xyz = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-    val utxo_abc = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
-    val utxo_def = TransactionOutputAddress(3, 0, 0, dummyTxIdentifier)
-    val utxo_uvw = TransactionOutputAddress(4, 0, 0, dummyTxIdentifier)
+    val utxo_xyz = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+    val utxo_abc = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
+    val utxo_def = TransactionOutputAddress(0, 0, 3, dummyTxIdentifier)
+    val utxo_uvw = TransactionOutputAddress(0, 0, 4, dummyTxIdentifier)
 
     val dummyTxoAddress = TransactionOutputAddress(0, 0, 0, dummyTxIdentifier)
 
@@ -909,10 +909,10 @@ class TransactionSyntaxInterpreterMintingCaseCSpec extends munit.FunSuite with M
    */
   test("Valid data-input case 5, minting 2 Asset Token Limited, with 2 groups and 2 series") {
     val utxo = TransactionOutputAddress(0, 0, 0, dummyTxIdentifier)
-    val utxo1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-    val utxo2 = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
-    val utxo3 = TransactionOutputAddress(3, 0, 0, dummyTxIdentifier)
-    val utxo4 = TransactionOutputAddress(4, 0, 0, dummyTxIdentifier)
+    val utxo1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+    val utxo2 = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
+    val utxo3 = TransactionOutputAddress(0, 0, 3, dummyTxIdentifier)
+    val utxo4 = TransactionOutputAddress(0, 0, 4, dummyTxIdentifier)
 
     val gA = Event.GroupPolicy(label = "policyGA", registrationUtxo = utxo1)
     val gB = Event.GroupPolicy(label = "policyGB", registrationUtxo = utxo2)
@@ -1009,10 +1009,10 @@ class TransactionSyntaxInterpreterMintingCaseCSpec extends munit.FunSuite with M
    */
   test("Invalid data-input case 6, minting 2 Asset Token Limited, with 2 groups and 2 series") {
     val utxo = TransactionOutputAddress(0, 0, 0, dummyTxIdentifier)
-    val utxo1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-    val utxo2 = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
-    val utxo3 = TransactionOutputAddress(3, 0, 0, dummyTxIdentifier)
-    val utxo4 = TransactionOutputAddress(4, 0, 0, dummyTxIdentifier)
+    val utxo1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+    val utxo2 = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
+    val utxo3 = TransactionOutputAddress(0, 0, 3, dummyTxIdentifier)
+    val utxo4 = TransactionOutputAddress(0, 0, 4, dummyTxIdentifier)
 
     val gA = Event.GroupPolicy(label = "policyGA", registrationUtxo = utxo1)
     val gB = Event.GroupPolicy(label = "policyGB", registrationUtxo = utxo2)
@@ -1097,8 +1097,8 @@ class TransactionSyntaxInterpreterMintingCaseCSpec extends munit.FunSuite with M
    */
   test("Invalid data-input case 7, minting 1 Asset, series Utxo does not refer to a series token") {
     val utxo = TransactionOutputAddress(0, 0, 0, dummyTxIdentifier)
-    val utxo_abc = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-    val utxo_xyz = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
+    val utxo_abc = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+    val utxo_xyz = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
 
     val g1 = Event.GroupPolicy(label = "policyG1", registrationUtxo = utxo_xyz)
 
@@ -1159,8 +1159,8 @@ class TransactionSyntaxInterpreterMintingCaseCSpec extends munit.FunSuite with M
    */
   test("Invalid data-input case 8, minting 1 Asset, group Utxo does not refer to a series token") {
     val utxo = TransactionOutputAddress(0, 0, 0, dummyTxIdentifier)
-    val utxo_abc = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
-    val utxo_xyz = TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
+    val utxo_abc = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
+    val utxo_xyz = TransactionOutputAddress(0, 0, 2, dummyTxIdentifier)
 
     val g1 = Event.GroupPolicy(label = "g1", registrationUtxo = utxo_xyz)
     val s1 = Event.SeriesPolicy(label = "s1", registrationUtxo = utxo, tokenSupply = Some(5))

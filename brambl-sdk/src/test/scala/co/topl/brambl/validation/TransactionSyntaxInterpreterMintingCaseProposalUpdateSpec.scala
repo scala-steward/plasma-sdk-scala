@@ -16,7 +16,7 @@ import co.topl.brambl.syntax._
  */
 class TransactionSyntaxInterpreterMintingCaseProposalUpdateSpec extends munit.FunSuite with MockHelpers {
 
-  private val txoAddress_1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
+  private val txoAddress_1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
 
   test("Valid data-input case 1, minting a proposal updated Token") {
     val value_1_in: Value =

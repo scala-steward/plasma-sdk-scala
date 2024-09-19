@@ -3,17 +3,12 @@ package co.topl.brambl.validation
 import cats.Id
 import cats.implicits._
 import co.topl.brambl.MockHelpers
-import co.topl.brambl.models.box.Attestation
-import co.topl.brambl.models.box.Challenge
-import co.topl.brambl.models.box.Lock
-import co.topl.brambl.models.box.Value
+import co.topl.brambl.constants.NetworkConstants.{MAIN_NETWORK_ID, TEST_NETWORK_ID}
+import co.topl.brambl.models.box.{Attestation, Challenge, Lock, Value}
 import co.topl.brambl.models.transaction.Schedule
-import co.topl.quivr.api.Proposer
-import co.topl.quivr.api.Prover
+import co.topl.quivr.api.{Proposer, Prover}
 import com.google.protobuf.ByteString
-import quivr.models.Int128
-import quivr.models.Proof
-import quivr.models.Proposition
+import quivr.models.{Int128, Proof, Proposition}
 
 class TransactionSyntaxInterpreterSpec extends munit.FunSuite with MockHelpers {
 
@@ -168,5 +163,22 @@ class TransactionSyntaxInterpreterSpec extends munit.FunSuite with MockHelpers {
       .swap
       .exists(_.toList.contains(TransactionSyntaxError.InvalidDataLength))
     assertEquals(result, true)
+  }
+
+  test("Mismatched Network IDs ") {
+    val inputs = txFull.inputs.map(in => in.copy(address = in.address.withNetwork(MAIN_NETWORK_ID)))
+    val outputs = txFull.outputs.map(out => out.copy(address = out.address.withNetwork(MAIN_NETWORK_ID)))
+    val testTx = txFull.copy(
+      outputs = outputs :+ outputs.head.copy(address = outputs.head.address.withNetwork(TEST_NETWORK_ID)),
+      inputs = inputs.head.copy(address = inputs.head.address.withNetwork(TEST_NETWORK_ID)) +: inputs
+    )
+    val validator = TransactionSyntaxInterpreter.make[Id]()
+    val result = validator.validate(testTx).swap
+    assertEquals(
+      result.exists(
+        _.toList.contains(TransactionSyntaxError.InconsistentNetworkIDs(Set(MAIN_NETWORK_ID, TEST_NETWORK_ID)))
+      ),
+      true
+    )
   }
 }

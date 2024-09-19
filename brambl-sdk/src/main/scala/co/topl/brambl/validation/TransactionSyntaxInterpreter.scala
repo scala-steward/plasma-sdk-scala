@@ -47,7 +47,8 @@ object TransactionSyntaxInterpreter {
       mintingValidation,
       updateProposalValidation,
       mergingDistinctValidation,
-      mergingValidation
+      mergingValidation,
+      lockAddressesNetworkIdValidation
     )
 
   /**
@@ -703,4 +704,18 @@ object TransactionSyntaxInterpreter {
     }
   }
 
+  /**
+   * Validate that all the lock addresses in the transaction share the same network ID
+   */
+  private def lockAddressesNetworkIdValidation(
+    transaction: IoTransaction
+  ): ValidatedNec[TransactionSyntaxError, Unit] = {
+    val networkIds = transaction.inputs.map(_.address.network) ++ transaction.outputs.map(_.address.network)
+    val distinctNetworkIds = networkIds.distinct
+    Validated.condNec(
+      distinctNetworkIds.length == 1,
+      (),
+      TransactionSyntaxError.InconsistentNetworkIDs(distinctNetworkIds.toSet)
+    )
+  }
 }

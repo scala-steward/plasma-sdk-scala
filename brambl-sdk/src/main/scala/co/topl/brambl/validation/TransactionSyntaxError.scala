@@ -74,4 +74,9 @@ object TransactionSyntaxError {
    * A Syntax error indicating that the request merging operation is invalid
    */
   case class IncompatibleMerge(inputs: Seq[Value], output: Value) extends TransactionSyntaxError
+
+  /**
+   * A Syntax error indicating that the lock addresses in the transaction do not all share the same network ID
+   */
+  case class InconsistentNetworkIDs(networkIDs: Set[Int]) extends TransactionSyntaxError
 }

@@ -16,7 +16,7 @@ import co.topl.brambl.syntax._
  */
 class TransactionSyntaxInterpreterTransferSeriesSpec extends munit.FunSuite with MockHelpers {
 
-  private val txoAddress_1 = TransactionOutputAddress(1, 0, 0, dummyTxIdentifier)
+  private val txoAddress_1 = TransactionOutputAddress(0, 0, 1, dummyTxIdentifier)
   TransactionOutputAddress(2, 0, 0, dummyTxIdentifier)
 
   test("Valid data-input case, transfer a simple series ") {
