@@ -70,7 +70,7 @@ jobs:
         uses: chetan/git-restore-mtime-action@v1
 
       - name: Compile and Test
-        run: sbt checkPRTestQuick
+        run: sbt checkPR
 
       - name: Upload Test Results
         if: always()
@@ -81,6 +81,27 @@ jobs:
             **/target/test-reports/*.xml
             !target/**
           overwrite: true
+      - name: Aggregate Coverage Reports
+        run: sbt coverageAggregate
+      - name: Code Coverage Report Markdown
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: target/scala-2.13/coverage-report/cobertura.xml
+          badge: true
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          path: code-coverage-results.md
+          number: ${{ steps.finder.outputs.pr }}
       - name: Cleanup before cache
         shell: bash
         run: |

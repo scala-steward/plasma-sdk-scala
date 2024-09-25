@@ -184,6 +184,6 @@ lazy val brambl = project
     quivr4s
   )
 
-addCommandAlias("checkPR", s"; scalafixAll --check; scalafmtCheckAll; +test")
+addCommandAlias("checkPR", s"; scalafixAll --check; scalafmtCheckAll; +coverage; +test; +coverageReport")
 addCommandAlias("preparePR", s"; scalafixAll; scalafmtAll; +test; unidoc")
 addCommandAlias("checkPRTestQuick", s"; scalafixAll --check; scalafmtCheckAll; testQuick")
