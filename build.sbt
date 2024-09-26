@@ -1,7 +1,7 @@
 inThisBuild(
   List(
-    organization := "co.topl",
-    homepage := Some(url("https://github.com/Topl/BramblSc")),
+    organization := "xyz.stratalab",
+    homepage := Some(url("https://github.com/Stratalab/strata-sdk-scala")),
     licenses := Seq("MPL2.0" -> url("https://www.mozilla.org/en-US/MPL/2.0/")),
     scalaVersion := "2.13.13",
     testFrameworks += TestFrameworks.MUnit
@@ -60,7 +60,7 @@ def fallbackVersion(d: java.util.Date): String =
 lazy val publishSettings = Seq(
   version := dynverGitDescribeOutput.value
     .mkVersion(versionFmt, fallbackVersion(dynverCurrentDate.value)),
-  homepage := Some(url("https://github.com/Topl/BramblSc")),
+  homepage := Some(url("https://github.com/Stratalab/strata-sdk-scala")),
   ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org",
   sonatypeRepository := "https://s01.oss.sonatype.org/service/local",
   Test / publishArtifact := false,
@@ -127,17 +127,17 @@ lazy val quivr4s = project
   )
   .dependsOn(crypto)
 
-lazy val bramblSdk = project
-  .in(file("brambl-sdk"))
+lazy val strataSdk = project
+  .in(file("strata-sdk"))
   .settings(
-    name := "brambl-sdk",
+    name := "strata-sdk",
     commonSettings,
     publishSettings,
     Test / publishArtifact := true,
     Test / parallelExecution := false,
     libraryDependencies ++=
-      Dependencies.BramblSdk.sources ++
-      Dependencies.BramblSdk.tests
+      Dependencies.StrataSdk.sources ++
+      Dependencies.StrataSdk.tests
   )
   .dependsOn(quivr4s % "compile->compile;test->test")
 
@@ -153,7 +153,7 @@ lazy val serviceKit = project
       Dependencies.ServiceKit.sources ++
         Dependencies.ServiceKit.tests
   )
-  .dependsOn(bramblSdk)
+  .dependsOn(strataSdk)
 
 lazy val integration = project
   .in(file("integration"))
@@ -162,14 +162,14 @@ lazy val integration = project
     publish / skip := true,
     libraryDependencies ++= Dependencies.IntegrationTests.sources ++ Dependencies.IntegrationTests.tests
   )
-  .dependsOn(bramblSdk)
+  .dependsOn(strataSdk)
 
 val DocumentationRoot = file("documentation") / "static" / "scaladoc" / "current"
 
-lazy val brambl = project
+lazy val strata = project
   .in(file("."))
   .settings(
-    moduleName := "brambl",
+    moduleName := "strata",
     commonSettings,
     publish / skip := true,
     // Currently excluding crypto since there are issues due to the use of macro annotations
@@ -179,7 +179,7 @@ lazy val brambl = project
   .enablePlugins(ReproducibleBuildsPlugin, ScalaUnidocPlugin)
   .aggregate(
     crypto,
-    bramblSdk,
+    strataSdk,
     serviceKit,
     quivr4s
   )

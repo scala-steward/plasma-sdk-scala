@@ -95,7 +95,7 @@ object Dependencies {
         .map(_ % Test)
   }
 
-  object BramblSdk {
+  object StrataSdk {
 
     lazy val sources: Seq[ModuleID] = Dependencies.protobufSpecs ++ btc :+ grpcNetty
 
@@ -118,7 +118,7 @@ object Dependencies {
   object IntegrationTests {
 
     lazy val sources: Seq[ModuleID] =
-      Crypto.sources ++ BramblSdk.sources ++ ServiceKit.sources :+ fs2Io
+      Crypto.sources ++ StrataSdk.sources ++ ServiceKit.sources :+ fs2Io
     lazy val tests: Seq[ModuleID] = (sources ++ mUnitTest).map(_ % Test)
   }
 

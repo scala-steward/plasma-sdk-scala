@@ -34,14 +34,14 @@ Senders wallet should look something like:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.Context
-import co.topl.brambl.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.Context
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.models.{Datum, Event}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.{LvlType, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps, int128AsBigInt}
-import co.topl.brambl.wallet.{CredentiallerInterpreter, WalletApi}
+import xyz.stratalab.sdk.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.models.{Datum, Event}
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.{LvlType, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps, int128AsBigInt}
+import xyz.stratalab.sdk.wallet.{CredentiallerInterpreter, WalletApi}
 
 import java.io.File
 import java.nio.file.Paths
@@ -173,11 +173,11 @@ At this point, you should have code to create a new wallet and lock address for 
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.builders.TransactionBuilderApi
-import co.topl.brambl.codecs.AddressCodecs.encodeAddress
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.codecs.AddressCodecs.encodeAddress
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.wallet.WalletApi
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.wallet.WalletApi
 
 import java.io.File
 import java.nio.file.Paths
@@ -313,17 +313,17 @@ Recipient's LockAddress. The code should look similar to this:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.Context
-import co.topl.brambl.builders.TransactionBuilderApi
-import co.topl.brambl.builders.TransactionBuilderApi.implicits.lockAddressOps
-import co.topl.brambl.codecs.AddressCodecs.decodeAddress
+import xyz.stratalab.sdk.Context
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.builders.TransactionBuilderApi.implicits.lockAddressOps
+import xyz.stratalab.sdk.codecs.AddressCodecs.decodeAddress
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.models.Indices
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.LvlType
-import co.topl.brambl.utils.Encoding
-import co.topl.brambl.wallet.{CredentiallerInterpreter, WalletApi}
+import xyz.stratalab.sdk.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.models.Indices
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.LvlType
+import xyz.stratalab.sdk.utils.Encoding
+import xyz.stratalab.sdk.wallet.{CredentiallerInterpreter, WalletApi}
 import quivr.models.VerificationKey
 
 import java.nio.file.Paths
@@ -418,12 +418,12 @@ The following code shows an example of the recipient checking their balance:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.{int128AsBigInt, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps}
-import co.topl.brambl.wallet.WalletApi
+import xyz.stratalab.sdk.dataApi.{GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.{int128AsBigInt, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps}
+import xyz.stratalab.sdk.wallet.WalletApi
 
 import java.nio.file.Paths
 
@@ -468,12 +468,12 @@ The following code shows an example of the sender checking their balance:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.{int128AsBigInt, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps}
-import co.topl.brambl.wallet.WalletApi
+import xyz.stratalab.sdk.dataApi.{GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.{int128AsBigInt, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps}
+import xyz.stratalab.sdk.wallet.WalletApi
 
 import java.nio.file.Paths
 

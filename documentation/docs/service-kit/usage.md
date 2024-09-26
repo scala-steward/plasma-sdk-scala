@@ -19,13 +19,13 @@ The first step is to create a vault. The vault is where the master key is stored
 //> using dep "org.typelevel::cats-core:2.10.0"
 
 import cats.effect.IO
-import co.topl.brambl.wallet.WalletApi
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.wallet.WalletApi
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
 import co.topl.brambl.constants.NetworkConstants
 
 import cats.effect.std
 import io.circe.syntax._
-import co.topl.crypto.encryption.VaultStore.Codecs._
+import xyz.stratalab.crypto.encryption.VaultStore.Codecs._
 import cats.effect.unsafe.implicits.global
 
 import java.io.File
@@ -100,19 +100,19 @@ Users must update the wallet state whenever one of their child keys is used to c
 //> using dep "org.typelevel::cats-core:2.10.0"
 
 import cats.effect.IO
-import co.topl.brambl.wallet.WalletApi
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.wallet.WalletApi
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
 import co.topl.brambl.constants.NetworkConstants
 import cats.effect.std
 import io.circe.syntax._
-import co.topl.crypto.encryption.VaultStore.Codecs._
+import xyz.stratalab.crypto.encryption.VaultStore.Codecs._
 import cats.effect.unsafe.implicits.global
 import cats.implicits.toTraverseOps
-import co.topl.brambl.builders.TransactionBuilderApi
-import co.topl.brambl.builders.TransactionBuilderApi.implicits.lockAddressOps
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.builders.TransactionBuilderApi.implicits.lockAddressOps
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.models.Indices
-import co.topl.brambl.utils.Encoding
+import xyz.stratalab.sdk.models.Indices
+import xyz.stratalab.sdk.utils.Encoding
 import quivr.models.VerificationKey
 
 import java.io.File

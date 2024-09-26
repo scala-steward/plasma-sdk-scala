@@ -80,8 +80,8 @@ import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import co.topl.brambl.constants.NetworkConstants.{PRIVATE_NETWORK_ID, MAIN_LEDGER_ID}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.wallet.WalletApi
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.wallet.WalletApi
 
 import java.io.File
 import java.nio.file.Paths
@@ -189,12 +189,12 @@ At this point, your code should look something like this:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.LvlType
-import co.topl.brambl.wallet.WalletApi
+import xyz.stratalab.sdk.dataApi.{GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.LvlType
+import xyz.stratalab.sdk.wallet.WalletApi
 
 import java.io.File
 import java.nio.file.Paths
@@ -285,14 +285,14 @@ At this point, your code should look something like this:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.Context
-import co.topl.brambl.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.Context
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.models.{Datum, Event}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.LvlType
-import co.topl.brambl.wallet.{CredentiallerInterpreter, WalletApi}
+import xyz.stratalab.sdk.dataApi.{GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.models.{Datum, Event}
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.LvlType
+import xyz.stratalab.sdk.wallet.{CredentiallerInterpreter, WalletApi}
 
 import java.io.File
 import java.nio.file.Paths
@@ -390,14 +390,14 @@ At this point, your code should look something like this:
 import cats.arrow.FunctionK
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
-import co.topl.brambl.Context
-import co.topl.brambl.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.Context
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
 import co.topl.brambl.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
-import co.topl.brambl.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.models.{Datum, Event}
-import co.topl.brambl.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
-import co.topl.brambl.syntax.{LvlType, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps, int128AsBigInt}
-import co.topl.brambl.wallet.{CredentiallerInterpreter, WalletApi}
+import xyz.stratalab.sdk.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
+import xyz.stratalab.sdk.models.{Datum, Event}
+import xyz.stratalab.sdk.servicekit.{WalletKeyApi, WalletStateApi, WalletStateResource}
+import xyz.stratalab.sdk.syntax.{LvlType, valueToQuantitySyntaxOps, valueToTypeIdentifierSyntaxOps, int128AsBigInt}
+import xyz.stratalab.sdk.wallet.{CredentiallerInterpreter, WalletApi}
 
 import java.io.File
 import java.nio.file.Paths

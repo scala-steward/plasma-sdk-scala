@@ -57,3 +57,6 @@ docker/*.jar
 playground/
 node01/*
 node02/*
+
+# nix
+.direnv
