@@ -2,8 +2,8 @@ package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.codecs.AddressCodecs
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.LockAddress
-import co.topl.brambl.models.transaction.UnspentTransactionOutput
+import xyz.stratalab.sdk.models.LockAddress
+import xyz.stratalab.sdk.models.transaction.UnspentTransactionOutput
 
 trait UtxoDisplayOps {
 

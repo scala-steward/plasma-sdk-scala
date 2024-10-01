@@ -1,8 +1,8 @@
 package xyz.stratalab.sdk.validation
 
-import co.topl.brambl.models.TransactionOutputAddress
-import co.topl.brambl.models.box.{AssetMergingStatement, Value}
-import co.topl.brambl.models.transaction.Schedule
+import xyz.stratalab.sdk.models.TransactionOutputAddress
+import xyz.stratalab.sdk.models.box.{AssetMergingStatement, Value}
+import xyz.stratalab.sdk.models.transaction.Schedule
 import quivr.models.{Proof, Proposition}
 
 sealed abstract class TransactionSyntaxError extends ValidationError

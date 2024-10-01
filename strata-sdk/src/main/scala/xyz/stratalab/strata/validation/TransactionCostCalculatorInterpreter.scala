@@ -2,8 +2,8 @@ package xyz.stratalab.sdk.validation
 
 import cats.Applicative
 import xyz.stratalab.sdk.common.ContainsImmutable.instances.ioTransactionImmutable
-import co.topl.brambl.models.box.Attestation
-import co.topl.brambl.models.transaction._
+import xyz.stratalab.sdk.models.box.Attestation
+import xyz.stratalab.sdk.models.transaction._
 import xyz.stratalab.sdk.validation.algebras.TransactionCostCalculator
 import quivr.models.Proof
 

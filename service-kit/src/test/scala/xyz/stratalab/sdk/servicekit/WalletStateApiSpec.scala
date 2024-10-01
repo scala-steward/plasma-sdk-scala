@@ -6,8 +6,8 @@ import xyz.stratalab.sdk.builders.locks.{LockTemplate, PropositionTemplate}
 import xyz.stratalab.sdk.common.ContainsEvidence.Ops
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.constants.NetworkConstants
-import co.topl.brambl.models.{Indices, LockAddress, LockId}
-import co.topl.brambl.models.box.Lock
+import xyz.stratalab.sdk.models.{Indices, LockAddress, LockId}
+import xyz.stratalab.sdk.models.box.Lock
 import xyz.stratalab.sdk.utils.Encoding
 import com.google.protobuf.ByteString
 import munit.CatsEffectSuite

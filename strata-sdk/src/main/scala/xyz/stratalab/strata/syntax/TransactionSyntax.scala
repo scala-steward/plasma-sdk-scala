@@ -4,9 +4,9 @@ import xyz.stratalab.sdk.common.ContainsEvidence
 import xyz.stratalab.sdk.common.ContainsImmutable
 import xyz.stratalab.sdk.common.ContainsSignable
 import xyz.stratalab.sdk.common.ContainsSignable.instances.ioTransactionSignable
-import co.topl.brambl.models.TransactionId
-import co.topl.brambl.models.common.ImmutableBytes
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.TransactionId
+import xyz.stratalab.sdk.models.common.ImmutableBytes
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 
 import scala.language.implicitConversions
 

@@ -4,7 +4,7 @@ import cats.Id
 import quivr.models.Proposition.Value._
 import xyz.stratalab.sdk.MockHelpers
 import xyz.stratalab.sdk.builders.locks.PropositionTemplate.UnableToBuildPropositionTemplate
-import co.topl.brambl.models.box.Lock.Value.Predicate
+import xyz.stratalab.sdk.models.box.Lock.Value.Predicate
 
 class LockTemplateSpec extends munit.FunSuite with MockHelpers {
 

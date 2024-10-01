@@ -1,9 +1,9 @@
 package xyz.stratalab.sdk.builders
 
-import co.topl.brambl.models.box.FungibilityType.GROUP_AND_SERIES
-import co.topl.brambl.models.box.QuantityDescriptorType.LIQUID
-import co.topl.brambl.models.box.Value
-import co.topl.brambl.models.transaction.UnspentTransactionOutput
+import xyz.stratalab.sdk.models.box.FungibilityType.GROUP_AND_SERIES
+import xyz.stratalab.sdk.models.box.QuantityDescriptorType.LIQUID
+import xyz.stratalab.sdk.models.box.Value
+import xyz.stratalab.sdk.models.transaction.UnspentTransactionOutput
 import xyz.stratalab.sdk.syntax.{
   bigIntAsInt128,
   groupPolicyAsGroupPolicySyntaxOps,

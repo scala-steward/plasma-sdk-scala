@@ -2,7 +2,7 @@ package xyz.stratalab.sdk.syntax
 
 import cats.implicits.catsSyntaxOptionId
 import xyz.stratalab.sdk.MockHelpers
-import co.topl.brambl.models.box.Value
+import xyz.stratalab.sdk.models.box.Value
 import com.google.protobuf.ByteString
 
 class TokenTypeIdentifierSyntaxSpec extends munit.FunSuite with MockHelpers {

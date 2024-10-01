@@ -6,8 +6,8 @@ import xyz.stratalab.sdk.builders.locks.LockTemplate
 import xyz.stratalab.sdk.common.ContainsEvidence.Ops
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
-import co.topl.brambl.models._
-import co.topl.brambl.models.box.Lock
+import xyz.stratalab.sdk.models._
+import xyz.stratalab.sdk.models.box.Lock
 import quivr.models._
 
 /**

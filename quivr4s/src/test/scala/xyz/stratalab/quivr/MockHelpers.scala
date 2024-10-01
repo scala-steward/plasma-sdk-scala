@@ -2,7 +2,7 @@ package xyz.stratalab.quivr
 
 import cats.Id
 import cats.implicits._
-import co.topl.brambl.models.{Datum, Event}
+import xyz.stratalab.sdk.models.{Datum, Event}
 import xyz.stratalab.common.ParsableDataInterface
 import xyz.stratalab.crypto.hash.Blake2b256
 import xyz.stratalab.quivr.algebras.{DigestVerifier, SignatureVerifier}

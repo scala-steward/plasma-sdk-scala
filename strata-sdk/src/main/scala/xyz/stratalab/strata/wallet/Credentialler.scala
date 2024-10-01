@@ -1,7 +1,7 @@
 package xyz.stratalab.sdk.wallet
 
 import xyz.stratalab.sdk.Context
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 import xyz.stratalab.sdk.validation.ValidationError
 
 /**

@@ -4,7 +4,7 @@ import cats.arrow.FunctionK
 import cats.data.Kleisli
 import cats.effect.kernel.{Resource, Sync}
 import xyz.stratalab.sdk.syntax.ioTransactionAsTransactionSyntaxOps
-import co.topl.node.services.{NodeRpcGrpc, _}
+import xyz.stratalab.node.services.{NodeRpcGrpc, _}
 import io.grpc.ManagedChannel
 
 /**

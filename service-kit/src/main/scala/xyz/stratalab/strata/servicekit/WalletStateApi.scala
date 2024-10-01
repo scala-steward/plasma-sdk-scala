@@ -9,8 +9,8 @@ import xyz.stratalab.sdk.codecs.LockTemplateCodecs.{decodeLockTemplate, encodeLo
 import xyz.stratalab.sdk.common.ContainsEvidence.Ops
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
-import co.topl.brambl.models.box.Lock
-import co.topl.brambl.models.{Indices, LockAddress, LockId}
+import xyz.stratalab.sdk.models.box.Lock
+import xyz.stratalab.sdk.models.{Indices, LockAddress, LockId}
 import xyz.stratalab.sdk.utils.Encoding
 import xyz.stratalab.sdk.wallet.WalletApi
 import com.google.protobuf.ByteString

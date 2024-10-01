@@ -2,9 +2,9 @@ package xyz.stratalab.sdk.syntax
 
 import xyz.stratalab.sdk.common.ContainsEvidence
 import xyz.stratalab.sdk.common.ContainsImmutable.instances.lockImmutable
-import co.topl.brambl.models.LockAddress
-import co.topl.brambl.models.LockId
-import co.topl.brambl.models.box.Lock
+import xyz.stratalab.sdk.models.LockAddress
+import xyz.stratalab.sdk.models.LockId
+import xyz.stratalab.sdk.models.box.Lock
 
 import scala.language.implicitConversions
 

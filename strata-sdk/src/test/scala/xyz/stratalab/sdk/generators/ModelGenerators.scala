@@ -1,8 +1,8 @@
 package xyz.stratalab.sdk.generators
 
-import co.topl.brambl.models.box._
-import co.topl.brambl.models.transaction._
-import co.topl.brambl.models._
+import xyz.stratalab.sdk.models.box._
+import xyz.stratalab.sdk.models.transaction._
+import xyz.stratalab.sdk.models._
 import xyz.stratalab.quivr.generators.ModelGenerators.arbitraryDigest
 import com.google.protobuf.ByteString
 import org.scalacheck.Arbitrary

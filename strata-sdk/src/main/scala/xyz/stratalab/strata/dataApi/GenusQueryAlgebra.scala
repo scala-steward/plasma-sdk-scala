@@ -2,11 +2,11 @@ package xyz.stratalab.sdk.dataApi
 
 import cats.effect.kernel.Resource
 import cats.effect.kernel.Sync
-import co.topl.brambl.models.LockAddress
-import co.topl.genus.services.QueryByLockAddressRequest
-import co.topl.genus.services.TransactionServiceGrpc
-import co.topl.genus.services.Txo
-import co.topl.genus.services.TxoState
+import xyz.stratalab.sdk.models.LockAddress
+import xyz.stratalab.indexer.services.QueryByLockAddressRequest
+import xyz.stratalab.indexer.services.TransactionServiceGrpc
+import xyz.stratalab.indexer.services.Txo
+import xyz.stratalab.indexer.services.TxoState
 import io.grpc.ManagedChannel
 
 /**

@@ -1,10 +1,10 @@
 package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.TransactionOutputAddress
-import co.topl.brambl.models.transaction.SpentTransactionOutput
+import xyz.stratalab.sdk.models.TransactionOutputAddress
+import xyz.stratalab.sdk.models.transaction.SpentTransactionOutput
 import xyz.stratalab.sdk.utils.Encoding
-import co.topl.genus.services.Txo
+import xyz.stratalab.indexer.services.Txo
 
 trait StxoDisplayOps {
 

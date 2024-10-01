@@ -5,7 +5,7 @@ import xyz.stratalab.sdk.common.ContainsImmutable.ContainsImmutableTOps
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.common.ContainsSignable.ContainsSignableTOps
 import xyz.stratalab.sdk.common.ContainsSignable.instances._
-import co.topl.brambl.models.box.Attestation
+import xyz.stratalab.sdk.models.box.Attestation
 
 class ContainsSignableSpec extends munit.FunSuite with MockHelpers {
 

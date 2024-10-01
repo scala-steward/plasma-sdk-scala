@@ -3,11 +3,11 @@ package xyz.stratalab.sdk.dataApi
 import cats.data.OptionT
 import cats.effect.kernel.{Resource, Sync}
 import cats.free.Free
-import co.topl.brambl.models.TransactionId
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.consensus.models.{BlockHeader, BlockId}
-import co.topl.node.models.BlockBody
-import co.topl.node.services.SynchronizationTraversalRes
+import xyz.stratalab.sdk.models.TransactionId
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.consensus.models.{BlockHeader, BlockId}
+import xyz.stratalab.node.models.BlockBody
+import xyz.stratalab.node.services.SynchronizationTraversalRes
 import io.grpc.ManagedChannel
 
 /**

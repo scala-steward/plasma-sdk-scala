@@ -1,8 +1,8 @@
 package xyz.stratalab.sdk.syntax
 
-import co.topl.brambl.models.box.Value._
-import co.topl.brambl.models.{GroupId, SeriesId}
-import co.topl.consensus.models.StakingRegistration
+import xyz.stratalab.sdk.models.box.Value._
+import xyz.stratalab.sdk.models.{GroupId, SeriesId}
+import xyz.stratalab.consensus.models.StakingRegistration
 import com.google.protobuf.ByteString
 
 import scala.language.implicitConversions

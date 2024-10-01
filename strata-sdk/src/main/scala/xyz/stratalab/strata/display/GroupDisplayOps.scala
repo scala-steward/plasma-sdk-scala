@@ -1,9 +1,9 @@
 package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.{Datum, GroupId, SeriesId}
+import xyz.stratalab.sdk.models.{Datum, GroupId, SeriesId}
 import xyz.stratalab.sdk.utils.Encoding
-import co.topl.brambl.models.box.Value
+import xyz.stratalab.sdk.models.box.Value
 
 trait GroupDisplayOps {
   implicit val groupIdDisplay: DisplayOps[GroupId] = (id: GroupId) => Encoding.encodeToHex(id.value.toByteArray())

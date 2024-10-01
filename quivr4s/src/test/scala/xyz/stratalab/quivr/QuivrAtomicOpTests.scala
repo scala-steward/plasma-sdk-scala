@@ -1,7 +1,7 @@
 package xyz.stratalab.quivr
 
 import cats.{Id, Monad}
-import co.topl.brambl.models.Datum
+import xyz.stratalab.sdk.models.Datum
 import xyz.stratalab.crypto.hash.Blake2b256
 import xyz.stratalab.quivr.runtime.QuivrRuntimeErrors
 import com.google.protobuf.ByteString

@@ -1,7 +1,7 @@
 package xyz.stratalab.sdk.syntax
 
-import co.topl.brambl.models.TransactionId
-import co.topl.brambl.models.TransactionOutputAddress
+import xyz.stratalab.sdk.models.TransactionId
+import xyz.stratalab.sdk.models.TransactionOutputAddress
 
 import scala.language.implicitConversions
 

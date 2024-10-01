@@ -1,7 +1,7 @@
 package xyz.stratalab.sdk.syntax
 
-import co.topl.brambl.models.box.Value
-import co.topl.brambl.models.box.Value.{Value => BoxValue}
+import xyz.stratalab.sdk.models.box.Value
+import xyz.stratalab.sdk.models.box.Value.{Value => BoxValue}
 import com.google.protobuf.ByteString
 import quivr.models.Int128
 import xyz.stratalab.sdk.MockHelpers

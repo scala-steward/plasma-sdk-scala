@@ -3,8 +3,8 @@ package xyz.stratalab.sdk.validation
 import cats.Id
 import xyz.stratalab.sdk.MockHelpers
 import xyz.stratalab.sdk.common.ContainsImmutable.instances.ioTransactionImmutable
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.brambl.models.transaction.SpentTransactionOutput
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.transaction.SpentTransactionOutput
 
 class TransactionCostCalculatorInterpreterSpec extends munit.FunSuite with MockHelpers {
 

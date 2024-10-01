@@ -1,8 +1,8 @@
 package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.box.Value
-import co.topl.brambl.models.box.Value.Value._
+import xyz.stratalab.sdk.models.box.Value
+import xyz.stratalab.sdk.models.box.Value.Value._
 import xyz.stratalab.sdk.syntax.{int128AsBigInt, valueToQuantitySyntaxOps}
 
 import scala.util.{Failure, Success, Try}

@@ -6,12 +6,12 @@ import cats.implicits.{catsSyntaxParallelSequence1, toTraverseOps}
 import xyz.stratalab.sdk.dataApi.BifrostQueryAlgebra
 import xyz.stratalab.sdk.dataApi.RpcChannelResource.channelResource
 import xyz.stratalab.sdk.display.blockIdDisplay.display
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 import xyz.stratalab.sdk.monitoring.BifrostMonitor.{AppliedBifrostBlock, BifrostBlockSync, UnappliedBifrostBlock}
-import co.topl.consensus.models.{BlockHeader, BlockId}
-import co.topl.node.models.FullBlockBody
-import co.topl.node.services.SynchronizationTraversalRes.Status.{Applied, Empty, Unapplied}
-import co.topl.node.services.{NodeRpcFs2Grpc, SynchronizationTraversalReq, SynchronizationTraversalRes}
+import xyz.stratalab.consensus.models.{BlockHeader, BlockId}
+import xyz.stratalab.node.models.FullBlockBody
+import xyz.stratalab.node.services.SynchronizationTraversalRes.Status.{Applied, Empty, Unapplied}
+import xyz.stratalab.node.services.{NodeRpcFs2Grpc, SynchronizationTraversalReq, SynchronizationTraversalRes}
 import fs2.Stream
 import io.grpc.Metadata
 

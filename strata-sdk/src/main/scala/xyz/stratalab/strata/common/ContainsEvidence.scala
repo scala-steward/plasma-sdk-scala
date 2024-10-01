@@ -1,6 +1,6 @@
 package xyz.stratalab.sdk.common
 
-import co.topl.brambl.models.Evidence
+import xyz.stratalab.sdk.models.Evidence
 import xyz.stratalab.crypto.accumulators.LeafData
 import xyz.stratalab.crypto.accumulators.merkle.MerkleTree
 import xyz.stratalab.crypto.hash.digest.Digest32

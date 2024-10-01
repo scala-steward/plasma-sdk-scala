@@ -2,9 +2,9 @@ package xyz.stratalab.sdk.validation
 
 import cats.Monad
 import cats.implicits._
-import co.topl.brambl.models.{AccumulatorRootId, Datum, LockId}
-import co.topl.brambl.models.box.Attestation
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.{AccumulatorRootId, Datum, LockId}
+import xyz.stratalab.sdk.models.box.Attestation
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 import xyz.stratalab.sdk.validation.algebras.TransactionAuthorizationVerifier
 import xyz.stratalab.quivr.api.Verifier
 import xyz.stratalab.quivr.runtime.DynamicContext

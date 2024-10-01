@@ -1,6 +1,6 @@
 package xyz.stratalab.sdk.validation.algebras
 
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 
 trait TransactionCostCalculator {
 

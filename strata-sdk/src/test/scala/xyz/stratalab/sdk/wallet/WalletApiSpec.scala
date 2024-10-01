@@ -5,7 +5,7 @@ import xyz.stratalab.crypto.encryption.VaultStore
 import xyz.stratalab.crypto.generation.mnemonic.MnemonicSizes
 import quivr.models.KeyPair
 import cats.arrow.FunctionK
-import co.topl.brambl.models.Indices
+import xyz.stratalab.sdk.models.Indices
 import xyz.stratalab.crypto.signing.ExtendedEd25519
 import io.circe.syntax.EncoderOps
 import xyz.stratalab.crypto.encryption.VaultStore.Codecs._

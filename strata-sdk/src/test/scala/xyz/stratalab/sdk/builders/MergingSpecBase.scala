@@ -3,11 +3,11 @@ package xyz.stratalab.sdk.builders
 import cats.Id
 import cats.data.ValidatedNec
 import xyz.stratalab.sdk.builders.MergingSpecBase.{BuildAssetMergeTransaction, BuildMergeStub, BuildValidMergeStub}
-import co.topl.brambl.models.{LockAddress, TransactionOutputAddress}
-import co.topl.brambl.models.box.{Lock, QuantityDescriptorType, Value}
-import co.topl.brambl.models.transaction.{IoTransaction, UnspentTransactionOutput}
+import xyz.stratalab.sdk.models.{LockAddress, TransactionOutputAddress}
+import xyz.stratalab.sdk.models.box.{Lock, QuantityDescriptorType, Value}
+import xyz.stratalab.sdk.models.transaction.{IoTransaction, UnspentTransactionOutput}
 import xyz.stratalab.sdk.syntax.{groupPolicyAsGroupPolicySyntaxOps, seriesPolicyAsSeriesPolicySyntaxOps}
-import co.topl.genus.services.Txo
+import xyz.stratalab.indexer.services.Txo
 import com.google.protobuf.ByteString
 import com.google.protobuf.struct.Struct
 

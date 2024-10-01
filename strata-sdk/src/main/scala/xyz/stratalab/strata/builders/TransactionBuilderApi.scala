@@ -7,11 +7,11 @@ import xyz.stratalab.sdk.builders.UserInputValidations.TransactionBuilder._
 import xyz.stratalab.sdk.codecs.AddressCodecs
 import xyz.stratalab.sdk.common.ContainsEvidence.Ops
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
-import co.topl.brambl.models.Event.{GroupPolicy, SeriesPolicy}
-import co.topl.brambl.models._
-import co.topl.brambl.models.box.Value.{Value => BoxValue}
-import co.topl.brambl.models.box._
-import co.topl.brambl.models.transaction.{IoTransaction, Schedule, SpentTransactionOutput, UnspentTransactionOutput}
+import xyz.stratalab.sdk.models.Event.{GroupPolicy, SeriesPolicy}
+import xyz.stratalab.sdk.models._
+import xyz.stratalab.sdk.models.box.Value.{Value => BoxValue}
+import xyz.stratalab.sdk.models.box._
+import xyz.stratalab.sdk.models.transaction.{IoTransaction, Schedule, SpentTransactionOutput, UnspentTransactionOutput}
 import xyz.stratalab.sdk.syntax.{
   bigIntAsInt128,
   groupPolicyAsGroupPolicySyntaxOps,
@@ -24,7 +24,7 @@ import xyz.stratalab.sdk.syntax.{
   UnknownType,
   ValueTypeIdentifier
 }
-import co.topl.genus.services.Txo
+import xyz.stratalab.indexer.services.Txo
 import com.google.protobuf.ByteString
 import com.google.protobuf.struct.Struct
 import quivr.models.{Int128, Proof, SmallData}
@@ -32,7 +32,7 @@ import scala.collection.immutable._
 
 import scala.language.implicitConversions
 import scala.util.{Failure, Success, Try}
-import co.topl.brambl.models.LockAddress
+import xyz.stratalab.sdk.models.LockAddress
 
 /**
  * Defines a builder for IoTransaction

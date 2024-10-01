@@ -19,7 +19,7 @@ import cats.data.EitherT
 import cats.arrow.FunctionK
 import cats.effect.kernel.Async
 import cats.effect.Resource
-import co.topl.brambl.models.Indices
+import xyz.stratalab.sdk.models.Indices
 import xyz.stratalab.sdk.utils.CatsUnsafeResource
 
 import scala.util.Try

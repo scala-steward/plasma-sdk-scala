@@ -4,8 +4,8 @@ import cats.Id
 import cats.implicits._
 import xyz.stratalab.sdk.MockHelpers
 import xyz.stratalab.sdk.constants.NetworkConstants.{MAIN_NETWORK_ID, TEST_NETWORK_ID}
-import co.topl.brambl.models.box.{Attestation, Challenge, Lock, Value}
-import co.topl.brambl.models.transaction.Schedule
+import xyz.stratalab.sdk.models.box.{Attestation, Challenge, Lock, Value}
+import xyz.stratalab.sdk.models.transaction.Schedule
 import xyz.stratalab.quivr.api.{Proposer, Prover}
 import com.google.protobuf.ByteString
 import quivr.models.{Int128, Proof, Proposition}

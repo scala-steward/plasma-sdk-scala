@@ -10,7 +10,7 @@ import xyz.stratalab.sdk.common.ContainsSignable.ContainsSignableTOps
 import xyz.stratalab.sdk.common.ContainsSignable.instances.ioTransactionSignable
 import xyz.stratalab.sdk.constants.NetworkConstants.{MAIN_LEDGER_ID, PRIVATE_NETWORK_ID}
 import xyz.stratalab.sdk.dataApi.{BifrostQueryAlgebra, GenusQueryAlgebra, RpcChannelResource}
-import co.topl.brambl.models.box.Attestation
+import xyz.stratalab.sdk.models.box.Attestation
 import xyz.stratalab.sdk.monitoring.BifrostMonitor.{AppliedBifrostBlock, UnappliedBifrostBlock}
 import xyz.stratalab.sdk.syntax.{LvlType, ioTransactionAsTransactionSyntaxOps}
 import xyz.stratalab.quivr.api.Prover

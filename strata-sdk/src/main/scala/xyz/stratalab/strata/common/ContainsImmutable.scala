@@ -1,10 +1,10 @@
 package xyz.stratalab.sdk.common
 
-import co.topl.brambl.models._
-import co.topl.brambl.models.box.{Attestation, Box, Challenge, FungibilityType, Lock, QuantityDescriptorType, Value}
-import co.topl.brambl.models.common.ImmutableBytes
-import co.topl.brambl.models.transaction._
-import co.topl.consensus.models._
+import xyz.stratalab.sdk.models._
+import xyz.stratalab.sdk.models.box.{Attestation, Box, Challenge, FungibilityType, Lock, QuantityDescriptorType, Value}
+import xyz.stratalab.sdk.models.common.ImmutableBytes
+import xyz.stratalab.sdk.models.transaction._
+import xyz.stratalab.consensus.models._
 import quivr.models.Ratio
 import xyz.stratalab.quivr.Tokens
 import com.google.protobuf.ByteString
@@ -243,13 +243,13 @@ object ContainsImmutable {
       up.kesKeyHours.immutable ++
       up.kesKeyMinutes.immutable
 
-    implicit val signatureKesSumImmutable: ContainsImmutable[co.topl.consensus.models.SignatureKesSum] =
+    implicit val signatureKesSumImmutable: ContainsImmutable[xyz.stratalab.consensus.models.SignatureKesSum] =
       v =>
         v.verificationKey.immutable ++
         v.signature.immutable ++
         v.witness.immutable
 
-    implicit val signatureKesProductImmutable: ContainsImmutable[co.topl.consensus.models.SignatureKesProduct] =
+    implicit val signatureKesProductImmutable: ContainsImmutable[xyz.stratalab.consensus.models.SignatureKesProduct] =
       v =>
         v.superSignature.immutable ++
         v.subSignature.immutable ++

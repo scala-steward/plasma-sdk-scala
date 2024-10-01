@@ -2,10 +2,10 @@ package xyz.stratalab.sdk.common
 
 import ContainsImmutable._
 import ContainsImmutable.instances._
-import co.topl.brambl.models.box.Attestation
-import co.topl.brambl.models.common.ImmutableBytes
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.brambl.models.transaction.SpentTransactionOutput
+import xyz.stratalab.sdk.models.box.Attestation
+import xyz.stratalab.sdk.models.common.ImmutableBytes
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.transaction.SpentTransactionOutput
 import quivr.models._
 
 // Long -> longSignable -> longSignableEvidence -> longSignableEvidenceId
