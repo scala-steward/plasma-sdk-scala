@@ -16,7 +16,7 @@ jobs:
   #     preserve-cache-between-runs: true
   maven-release:
     uses: ./.github/workflows/maven_release.yml
-    needs: sbt-build
+    # needs: sbt-build
     secrets: inherit
   # deploy-docs:
   #   uses: ./.github/workflows/deploy_docs.yml
