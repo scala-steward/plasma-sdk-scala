@@ -6,14 +6,14 @@ on:
     tags: ["*"]
 
 jobs:
-  sbt-build:
-    uses: ./.github/workflows/_sbt_build.yml
-    with:
-      target-os: >-
-        ["ubuntu-latest"]
-      java-versions: >-
-        ["11"]
-      preserve-cache-between-runs: true
+  # sbt-build:
+  #   uses: ./.github/workflows/_sbt_build.yml
+  #   with:
+  #     target-os: >-
+  #       ["ubuntu-latest"]
+  #     java-versions: >-
+  #       ["11"]
+  #     preserve-cache-between-runs: true
   maven-release:
     uses: ./.github/workflows/maven_release.yml
     needs: sbt-build
