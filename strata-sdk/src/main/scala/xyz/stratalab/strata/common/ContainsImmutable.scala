@@ -12,8 +12,10 @@ import com.google.protobuf.duration.Duration
 import com.google.protobuf.struct.Struct
 import quivr.models._
 import quivr.models.VerificationKey._
+
 import java.nio.charset.StandardCharsets
 import scala.language.implicitConversions
+import scala.reflect.ClassTag
 
 trait ContainsImmutable[T] {
   def immutableBytes(t: T): ImmutableBytes
@@ -50,6 +52,10 @@ object ContainsImmutable {
       string.getBytes(StandardCharsets.UTF_8)
 
     implicit val structImmutable: ContainsImmutable[Struct] = _.toByteArray.immutable
+
+    implicit def pairImmutable[T: ContainsImmutable: ClassTag, P: ContainsImmutable: ClassTag]: ContainsImmutable[(T, P)] = {
+      case (p: T, t: P) =>
+      t.immutable ++ p.immutable}
 
     implicit def seqImmutable[T: ContainsImmutable]: ContainsImmutable[Seq[T]] = (seq: Seq[T]) =>
       seq.zipWithIndex.foldLeft(ImmutableBytes()) { case (acc, (item, index)) =>
@@ -134,6 +140,7 @@ object ContainsImmutable {
       case Value.Value.Group(v)          => v.immutable
       case Value.Value.Series(v)         => v.immutable
       case Value.Value.UpdateProposal(v) => v.immutable
+      case Value.Value.ConfigProposal(v) => v.immutable
       case Value.Value.Empty             => Array[Byte](0).immutable
     }
 
@@ -242,6 +249,9 @@ object ContainsImmutable {
       up.operationalPeriodsPerEpoch.immutable ++
       up.kesKeyHours.immutable ++
       up.kesKeyMinutes.immutable
+
+    implicit val configProposalImmutable:  ContainsImmutable[Value.ConfigProposal] = (cp: Value.ConfigProposal) =>
+      cp.value.toSeq.immutable
 
     implicit val signatureKesSumImmutable: ContainsImmutable[xyz.stratalab.consensus.models.SignatureKesSum] =
       v =>
