@@ -1,6 +1,6 @@
 package xyz.stratalab.sdk.servicekit
 
-import cats.effect.IO
+import cats.effect.Async
 import cats.effect.kernel.Resource
 
 import java.sql.{Connection, DriverManager}
@@ -16,18 +16,18 @@ trait WalletStateResource {
    * @param name the name of the file containing the wallet state database. It might be a path if needed.
    * @return a resource that provides a connection to a wallet state database.
    */
-  def walletResource(name: String): Resource[IO, Connection] = Resource
+  def walletResource[F[_]: Async](name: String): Resource[F, Connection] = Resource
     .make(
       {
         // Without this line, repeated runs fail with "No suitable driver found for jdbc:sqlite:..."
         Class.forName("org.sqlite.JDBC")
-        IO.delay(
+        Async[F].delay(
           DriverManager.getConnection(
             s"jdbc:sqlite:${name}"
           )
         )
       }
-    )(conn => IO.delay(conn.close()))
+    )(conn => Async[F].delay(conn.close()))
 }
 
 /**

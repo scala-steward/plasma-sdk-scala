@@ -31,8 +31,8 @@ object WalletKeyApi {
       case class VaultStoreDoesNotExistException(name: String)
           extends WalletKeyException(s"VaultStore at $name does not exist")
 
-      case class MnemonicDoesNotExistException(name: String)
-          extends WalletKeyException(s"Mnemonic file at $name does not exist")
+      case class UnableToStoreMnemonicException(name: String)
+          extends WalletKeyException(s"Unable to store Mnemonic at filename $name")
 
       override def updateMainKeyVaultStore(
         mainKeyVaultStore: VaultStore[F],
@@ -95,6 +95,6 @@ object WalletKeyApi {
                 res <- Sync[F].blocking(file.write(mnemonic.mkString(",")))
               } yield res.asRight[WalletKeyException]
             }
-        else Either.left[WalletKeyException, Unit](MnemonicDoesNotExistException(mnemonicName)).pure[F]
+        else Either.left[WalletKeyException, Unit](UnableToStoreMnemonicException(mnemonicName)).pure[F]
     }
 }

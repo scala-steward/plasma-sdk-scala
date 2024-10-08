@@ -21,6 +21,15 @@ trait WalletStateAlgebra[F[_]] {
   def initWalletState(networkId: Int, ledgerId: Int, mainKey: KeyPair): F[Unit]
 
   /**
+   * Validate that the wallet interaction has been initialized. This includes very minimal state validation such as ensuring
+   * that the first interaction of (self, default) exists in the state and that it corresponds to the network id, ledger id and
+   * main key provided.
+   *
+   * @return A sequence of errors messages if the wallet state has not been properly initialized. Else an empty sequence
+   */
+  def validateWalletInitialization(networkId: Int, ledgerId: Int, mainKey: KeyPair): F[Either[Seq[String], Unit]]
+
+  /**
    * Get the indices associated to a signature proposition
    *
    * @param signatureProposition The signature proposition to get the indices for

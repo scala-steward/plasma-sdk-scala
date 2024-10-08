@@ -80,4 +80,10 @@ object MockWalletStateApi extends WalletStateAlgebra[IO] with MockHelpers {
   override def getLock(fellowship: String, contract: String, nextState: Int): F[Option[Lock]] = ???
 
   override def getLockByAddress(lockAddress: String): F[Option[Lock.Predicate]] = ???
+
+  override def validateWalletInitialization(
+    networkId: Int,
+    ledgerId:  Int,
+    mainKey:   KeyPair
+  ): IO[Either[Seq[String], Unit]] = ???
 }

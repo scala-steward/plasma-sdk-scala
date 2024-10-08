@@ -3,20 +3,21 @@ package xyz.stratalab.sdk.servicekit
 import cats.data.{OptionT, Validated, ValidatedNel}
 import cats.effect.kernel.{Resource, Sync}
 import cats.implicits._
-import xyz.stratalab.sdk.builders.TransactionBuilderApi
-import xyz.stratalab.sdk.builders.locks.{LockTemplate, PropositionTemplate}
-import xyz.stratalab.sdk.codecs.LockTemplateCodecs.{decodeLockTemplate, encodeLockTemplate}
-import xyz.stratalab.sdk.common.ContainsEvidence.Ops
-import xyz.stratalab.sdk.common.ContainsImmutable.instances._
-import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
 import co.topl.brambl.models.box.Lock
 import co.topl.brambl.models.{Indices, LockAddress, LockId}
-import xyz.stratalab.sdk.utils.Encoding
-import xyz.stratalab.sdk.wallet.WalletApi
 import com.google.protobuf.ByteString
 import io.circe.parser._
 import io.circe.syntax.EncoderOps
 import quivr.models.{KeyPair, Preimage, Proposition, VerificationKey}
+import xyz.stratalab.sdk.builders.TransactionBuilderApi
+import xyz.stratalab.sdk.builders.locks.{LockTemplate, PropositionTemplate}
+import xyz.stratalab.sdk.codecs.AddressCodecs
+import xyz.stratalab.sdk.codecs.LockTemplateCodecs.{decodeLockTemplate, encodeLockTemplate}
+import xyz.stratalab.sdk.common.ContainsEvidence.Ops
+import xyz.stratalab.sdk.common.ContainsImmutable.instances._
+import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
+import xyz.stratalab.sdk.utils.Encoding
+import xyz.stratalab.sdk.wallet.WalletApi
 
 import java.sql.Statement
 
@@ -509,6 +510,44 @@ object WalletStateApi {
             )
             _ <- Sync[F].delay(stmnt.close())
           } yield ()
+        }
+      }
+
+      def validateWalletInitialization(
+        networkId: Int,
+        ledgerId:  Int,
+        mainKey:   KeyPair
+      ): F[Either[Seq[String], Unit]] = {
+        import scala.util.control.Exception._
+        connection.use { conn =>
+          for {
+            stmnt <- Sync[F].delay(conn.createStatement())
+            rsOpt <- Sync[F].blocking(
+              allCatch opt stmnt.executeQuery(
+                s"SELECT address, vk FROM cartesian WHERE x_fellowship = 1 AND y_template = 1 AND z_interaction = 1"
+              )
+            )
+            address <- Sync[F].delay(
+              rsOpt.flatMap(rs => allCatch opt AddressCodecs.decodeAddress(rs.getString("address")).toOption) flatten
+            )
+            vk <- Sync[F].delay(
+              rsOpt
+                .flatMap(rs =>
+                  allCatch opt Encoding.decodeFromBase58(rs.getString("vk")).map(VerificationKey.parseFrom).toOption
+                ) flatten
+            )
+            expectedChildKey <- walletApi.deriveChildKeys(mainKey, Indices(1, 1, 1))
+            _                <- Sync[F].delay(stmnt.close())
+          } yield {
+            val errs = if (address.isDefined && vk.isDefined) {
+              val idErrors =
+                if (address.exists(a => a.network == networkId && a.ledger == ledgerId)) Seq()
+                else Seq("networkId or ledgerId mismatch")
+              val vkErrors = if (vk.contains(expectedChildKey.vk)) Seq() else Seq("mainKey mismatch")
+              idErrors ++ vkErrors
+            } else Seq("State not initialized")
+            if (errs.nonEmpty) Left(errs) else Right(())
+          }
         }
       }
 
