@@ -11,9 +11,9 @@ import xyz.stratalab.node.services.SynchronizationTraversalRes
 import io.grpc.ManagedChannel
 
 /**
- * Defines a Bifrost Query API for interacting with a Bifrost node.
+ * Defines a Node Query API for interacting with a Node node.
  */
-trait BifrostQueryAlgebra[F[_]] {
+trait NodeQueryAlgebra[F[_]] {
 
   /**
    * Fetches a block by its height.
@@ -77,62 +77,62 @@ trait BifrostQueryAlgebra[F[_]] {
 
 }
 
-object BifrostQueryAlgebra extends BifrostQueryInterpreter {
+object NodeQueryAlgebra extends NodeQueryInterpreter {
 
-  sealed trait BifrostQueryADT[A]
+  sealed trait NodeQueryADT[A]
 
-  case class FetchBlockBody(blockId: BlockId) extends BifrostQueryADT[Option[BlockBody]]
+  case class FetchBlockBody(blockId: BlockId) extends NodeQueryADT[Option[BlockBody]]
 
-  case class FetchBlockHeader(blockId: BlockId) extends BifrostQueryADT[Option[BlockHeader]]
+  case class FetchBlockHeader(blockId: BlockId) extends NodeQueryADT[Option[BlockHeader]]
 
-  case class FetchTransaction(txId: TransactionId) extends BifrostQueryADT[Option[IoTransaction]]
+  case class FetchTransaction(txId: TransactionId) extends NodeQueryADT[Option[IoTransaction]]
 
-  case class BlockByHeight(height: Long) extends BifrostQueryADT[Option[BlockId]]
+  case class BlockByHeight(height: Long) extends NodeQueryADT[Option[BlockId]]
 
-  case class BlockByDepth(depth: Long) extends BifrostQueryADT[Option[BlockId]]
+  case class BlockByDepth(depth: Long) extends NodeQueryADT[Option[BlockId]]
 
-  case class SynchronizationTraversal() extends BifrostQueryADT[Iterator[SynchronizationTraversalRes]]
+  case class SynchronizationTraversal() extends NodeQueryADT[Iterator[SynchronizationTraversalRes]]
 
-  case class MakeBlock(nbOfBlocks: Int) extends BifrostQueryADT[Unit]
+  case class MakeBlock(nbOfBlocks: Int) extends NodeQueryADT[Unit]
 
-  case class BroadcastTransaction(tx: IoTransaction) extends BifrostQueryADT[TransactionId]
+  case class BroadcastTransaction(tx: IoTransaction) extends NodeQueryADT[TransactionId]
 
-  type BifrostQueryADTMonad[A] = Free[BifrostQueryADT, A]
+  type NodeQueryADTMonad[A] = Free[NodeQueryADT, A]
 
   def makeBlockF(
     nbOfBlocks: Int
-  ): BifrostQueryADTMonad[Unit] =
+  ): NodeQueryADTMonad[Unit] =
     Free.liftF(MakeBlock(nbOfBlocks))
 
   def fetchBlockBodyF(
     blockId: BlockId
-  ): BifrostQueryADTMonad[Option[BlockBody]] =
+  ): NodeQueryADTMonad[Option[BlockBody]] =
     Free.liftF(FetchBlockBody(blockId))
 
   def fetchBlockHeaderF(
     blockId: BlockId
-  ): BifrostQueryADTMonad[Option[BlockHeader]] =
+  ): NodeQueryADTMonad[Option[BlockHeader]] =
     Free.liftF(FetchBlockHeader(blockId))
 
   def fetchTransactionF(
     txId: TransactionId
-  ): BifrostQueryADTMonad[Option[IoTransaction]] =
+  ): NodeQueryADTMonad[Option[IoTransaction]] =
     Free.liftF(FetchTransaction(txId))
 
-  def blockByHeightF(height: Long): BifrostQueryADTMonad[Option[BlockId]] =
+  def blockByHeightF(height: Long): NodeQueryADTMonad[Option[BlockId]] =
     Free.liftF(BlockByHeight(height))
 
-  def blockByDepthF(depth: Long): BifrostQueryADTMonad[Option[BlockId]] =
+  def blockByDepthF(depth: Long): NodeQueryADTMonad[Option[BlockId]] =
     Free.liftF(BlockByDepth(depth))
 
-  def synchronizationTraversalF[F[_]](): BifrostQueryADTMonad[Iterator[SynchronizationTraversalRes]] =
+  def synchronizationTraversalF[F[_]](): NodeQueryADTMonad[Iterator[SynchronizationTraversalRes]] =
     Free.liftF(SynchronizationTraversal())
 
-  def broadcastTransactionF(tx: IoTransaction): BifrostQueryADTMonad[TransactionId] =
+  def broadcastTransactionF(tx: IoTransaction): NodeQueryADTMonad[TransactionId] =
     Free.liftF(BroadcastTransaction(tx))
 
-  def make[F[_]: Sync](channelResource: Resource[F, ManagedChannel]): BifrostQueryAlgebra[F] =
-    new BifrostQueryAlgebra[F] {
+  def make[F[_]: Sync](channelResource: Resource[F, ManagedChannel]): NodeQueryAlgebra[F] =
+    new NodeQueryAlgebra[F] {
 
       override def makeBlock(nbOfBlocks: Int): F[Unit] = interpretADT(channelResource, makeBlockF(nbOfBlocks))
 

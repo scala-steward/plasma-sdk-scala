@@ -10,9 +10,9 @@ import xyz.stratalab.indexer.services.TxoState
 import io.grpc.ManagedChannel
 
 /**
- * Defines a Genus Query API for interacting with a Genus node.
+ * Defines a Indexer Query API for interacting with a Indexer node.
  */
-trait GenusQueryAlgebra[F[_]] {
+trait IndexerQueryAlgebra[F[_]] {
 
   /**
    * Query and retrieve a set of UTXOs encumbered by the given LockAddress.
@@ -23,10 +23,10 @@ trait GenusQueryAlgebra[F[_]] {
   def queryUtxo(fromAddress: LockAddress, txoState: TxoState = TxoState.UNSPENT): F[Seq[Txo]]
 }
 
-object GenusQueryAlgebra {
+object IndexerQueryAlgebra {
 
-  def make[F[_]: Sync](channelResource: Resource[F, ManagedChannel]): GenusQueryAlgebra[F] =
-    new GenusQueryAlgebra[F] {
+  def make[F[_]: Sync](channelResource: Resource[F, ManagedChannel]): IndexerQueryAlgebra[F] =
+    new IndexerQueryAlgebra[F] {
 
       def queryUtxo(fromAddress: LockAddress, txoState: TxoState = TxoState.UNSPENT): F[Seq[Txo]] = {
         import cats.implicits._
