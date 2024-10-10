@@ -324,4 +324,5 @@ object CredentiallerInterpreter {
         .flatMap(proofs => Prover.thresholdProver[F].prove(proofs.toSet, msg))
     }
   }
+  case class InvalidTransaction(errs: List[ValidationError]) extends RuntimeException
 }
