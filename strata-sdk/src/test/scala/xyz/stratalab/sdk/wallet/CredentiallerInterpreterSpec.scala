@@ -9,9 +9,9 @@ import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.common.ContainsSignable.ContainsSignableTOps
 import xyz.stratalab.sdk.common.ContainsSignable.instances._
 import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
-import co.topl.brambl.models.box._
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.brambl.models.{Datum, Event, Indices}
+import xyz.stratalab.sdk.models.box._
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.{Datum, Event, Indices}
 import xyz.stratalab.sdk.syntax.{cryptoToPbKeyPair, pbKeyPairToCryptoKeyPair}
 import xyz.stratalab.sdk.validation.TransactionAuthorizationError.AuthorizationFailed
 import xyz.stratalab.sdk.validation.TransactionSyntaxError

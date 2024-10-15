@@ -2,8 +2,8 @@ package xyz.stratalab.sdk
 
 import cats.Monad
 import cats.implicits.{catsSyntaxApplicativeId, catsSyntaxOptionId}
-import co.topl.brambl.models.Datum
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.Datum
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 import xyz.stratalab.sdk.common.ContainsSignable.ContainsSignableTOps
 import xyz.stratalab.sdk.common.ContainsSignable.instances._
 import xyz.stratalab.sdk.validation.{

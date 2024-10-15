@@ -2,8 +2,8 @@ package xyz.stratalab.sdk.dataApi
 
 import cats.data.ValidatedNel
 import xyz.stratalab.sdk.builders.locks.LockTemplate
-import co.topl.brambl.models.Indices
-import co.topl.brambl.models.box.Lock
+import xyz.stratalab.sdk.models.Indices
+import xyz.stratalab.sdk.models.box.Lock
 import quivr.models.{KeyPair, Preimage, Proposition}
 
 /**

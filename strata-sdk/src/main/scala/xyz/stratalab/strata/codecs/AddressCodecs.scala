@@ -1,10 +1,10 @@
 package xyz.stratalab.sdk.codecs
 
 import xyz.stratalab.sdk.utils.EncodingError
-import co.topl.brambl.models.LockAddress
+import xyz.stratalab.sdk.models.LockAddress
 import xyz.stratalab.sdk.utils.Encoding._
 import com.google.protobuf.ByteString
-import co.topl.brambl.models.LockId
+import xyz.stratalab.sdk.models.LockId
 
 object AddressCodecs {
 

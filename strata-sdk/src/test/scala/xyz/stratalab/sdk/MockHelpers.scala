@@ -8,15 +8,15 @@ import xyz.stratalab.sdk.common.ContainsImmutable.ContainsImmutableTOps
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.common.ContainsSignable.ContainsSignableTOps
 import xyz.stratalab.sdk.common.ContainsSignable.instances._
-import co.topl.brambl.models.Event.{GroupPolicy, SeriesPolicy}
-import co.topl.brambl.models._
-import co.topl.brambl.models.box.Attestation
-import co.topl.brambl.models.box.Challenge
-import co.topl.brambl.models.box.FungibilityType.{GROUP, SERIES}
-import co.topl.brambl.models.box.Lock
-import co.topl.brambl.models.box.QuantityDescriptorType.{ACCUMULATOR, FRACTIONABLE, IMMUTABLE}
-import co.topl.brambl.models.box.Value
-import co.topl.brambl.models.transaction._
+import xyz.stratalab.sdk.models.Event.{GroupPolicy, SeriesPolicy}
+import xyz.stratalab.sdk.models._
+import xyz.stratalab.sdk.models.box.Attestation
+import xyz.stratalab.sdk.models.box.Challenge
+import xyz.stratalab.sdk.models.box.FungibilityType.{GROUP, SERIES}
+import xyz.stratalab.sdk.models.box.Lock
+import xyz.stratalab.sdk.models.box.QuantityDescriptorType.{ACCUMULATOR, FRACTIONABLE, IMMUTABLE}
+import xyz.stratalab.sdk.models.box.Value
+import xyz.stratalab.sdk.models.transaction._
 import xyz.stratalab.sdk.syntax.{assetAsBoxVal, groupPolicyAsGroupPolicySyntaxOps, seriesPolicyAsSeriesPolicySyntaxOps}
 import xyz.stratalab.crypto.hash.Blake2b256
 import xyz.stratalab.quivr.api.Proposer

@@ -1,10 +1,10 @@
 package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.{Datum, SeriesId}
-import co.topl.brambl.models.box.{FungibilityType, QuantityDescriptorType}
+import xyz.stratalab.sdk.models.{Datum, SeriesId}
+import xyz.stratalab.sdk.models.box.{FungibilityType, QuantityDescriptorType}
 import xyz.stratalab.sdk.utils.Encoding
-import co.topl.brambl.models.box.Value
+import xyz.stratalab.sdk.models.box.Value
 
 trait SeriesDisplayOps {
 

@@ -3,13 +3,13 @@ package xyz.stratalab.sdk.validation
 import cats.Id
 import cats.implicits._
 import xyz.stratalab.sdk.MockHelpers
-import co.topl.brambl.models.Datum
-import co.topl.brambl.models.Event
-import co.topl.brambl.models.TransactionOutputAddress
-import co.topl.brambl.models.box.AssetMintingStatement
-import co.topl.brambl.models.box.Value
-import co.topl.brambl.models.transaction.SpentTransactionOutput
-import co.topl.brambl.models.transaction.UnspentTransactionOutput
+import xyz.stratalab.sdk.models.Datum
+import xyz.stratalab.sdk.models.Event
+import xyz.stratalab.sdk.models.TransactionOutputAddress
+import xyz.stratalab.sdk.models.box.AssetMintingStatement
+import xyz.stratalab.sdk.models.box.Value
+import xyz.stratalab.sdk.models.transaction.SpentTransactionOutput
+import xyz.stratalab.sdk.models.transaction.UnspentTransactionOutput
 import xyz.stratalab.sdk.syntax._
 
 /**

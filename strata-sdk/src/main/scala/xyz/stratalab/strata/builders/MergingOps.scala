@@ -4,8 +4,8 @@ import cats.data.{Chain, Validated, ValidatedNec}
 import cats.implicits.{catsSyntaxValidatedIdBinCompat0, toFoldableOps}
 import xyz.stratalab.sdk.common.ContainsImmutable.ContainsImmutableTOps
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
-import co.topl.brambl.models.box.Value
-import co.topl.brambl.models.{GroupId, SeriesId}
+import xyz.stratalab.sdk.models.box.Value
+import xyz.stratalab.sdk.models.{GroupId, SeriesId}
 import xyz.stratalab.sdk.syntax.{
   assetToAssetTypeSyntaxOps,
   bigIntAsInt128,
@@ -23,14 +23,14 @@ import xyz.stratalab.crypto.hash.implicits.{digestDigest32, sha256Hash}
 import com.google.protobuf.ByteString
 import com.google.protobuf.struct.Struct
 import quivr.models.Int128
-import co.topl.brambl.models.box.Value.Asset
+import xyz.stratalab.sdk.models.box.Value.Asset
 
 import scala.language.implicitConversions
 import scala.util.{Failure, Success, Try}
-import co.topl.brambl.models.transaction.UnspentTransactionOutput
-import co.topl.brambl.models.LockAddress
-import co.topl.genus.services.Txo
-import co.topl.brambl.models.box.FungibilityType
+import xyz.stratalab.sdk.models.transaction.UnspentTransactionOutput
+import xyz.stratalab.sdk.models.LockAddress
+import xyz.stratalab.indexer.services.Txo
+import xyz.stratalab.sdk.models.box.FungibilityType
 
 object MergingOps {
 

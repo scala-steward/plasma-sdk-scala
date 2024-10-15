@@ -4,8 +4,8 @@ import cats.arrow.FunctionK
 import cats.data.EitherT
 import cats.effect.Async
 import cats.implicits.{catsSyntaxApplicativeError, catsSyntaxEitherId, toBifunctorOps, toFlatMapOps, toFunctorOps}
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.brambl.models.{Datum, Event, LockAddress, TransactionId}
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.{Datum, Event, LockAddress, TransactionId}
 import quivr.models.VerificationKey
 import xyz.stratalab.sdk.Context
 import xyz.stratalab.sdk.builders.TransactionBuilderApi
@@ -28,15 +28,15 @@ import java.nio.charset.StandardCharsets
 
 class EasyApi[F[
   _
-]: Async: WalletKeyApiAlgebra: WalletStateAlgebra: TemplateStorageAlgebra: FellowshipStorageAlgebra: TransactionBuilderApi: WalletApi: BifrostQueryAlgebra: GenusQueryAlgebra: Credentialler] {
+]: Async: WalletKeyApiAlgebra: WalletStateAlgebra: TemplateStorageAlgebra: FellowshipStorageAlgebra: TransactionBuilderApi: WalletApi: NodeQueryAlgebra: IndexerQueryAlgebra: Credentialler] {
   val walletKeyApiAlgebra: WalletKeyApiAlgebra[F] = implicitly[WalletKeyApiAlgebra[F]]
   val walletStateAlgebra: WalletStateAlgebra[F] = implicitly[WalletStateAlgebra[F]]
   val templateStorageAlgebra: TemplateStorageAlgebra[F] = implicitly[TemplateStorageAlgebra[F]]
   val fellowshipStorageAlgebra: FellowshipStorageAlgebra[F] = implicitly[FellowshipStorageAlgebra[F]]
   val transactionBuilderApi: TransactionBuilderApi[F] = implicitly[TransactionBuilderApi[F]]
   val walletApi: WalletApi[F] = implicitly[WalletApi[F]]
-  val bifrostQueryAlgebra: BifrostQueryAlgebra[F] = implicitly[BifrostQueryAlgebra[F]]
-  val genusQueryAlgebra: GenusQueryAlgebra[F] = implicitly[GenusQueryAlgebra[F]]
+  val nodeQueryAlgebra: NodeQueryAlgebra[F] = implicitly[NodeQueryAlgebra[F]]
+  val genusQueryAlgebra: IndexerQueryAlgebra[F] = implicitly[IndexerQueryAlgebra[F]]
   val credentialler: Credentialler[F] = implicitly[Credentialler[F]]
 
   def transferFunds(
@@ -94,7 +94,7 @@ class EasyApi[F[
           .map(_.leftMap(errs => new RuntimeException("Transaction failed validation", InvalidTransaction(errs))))
       )
       txId <- EitherT(
-        bifrostQueryAlgebra
+        nodeQueryAlgebra
           .broadcastTransaction(proven)
           .map(_.asRight[RuntimeException])
           .handleError(e => new RuntimeException("Broadcast transaction failed", e).asLeft)
@@ -159,7 +159,7 @@ class EasyApi[F[
   }
 
   def buildContext(tx: IoTransaction): F[Context[F]] = for {
-    tipBlockHeader <- bifrostQueryAlgebra
+    tipBlockHeader <- nodeQueryAlgebra
       .blockByDepth(1L)
       .map(_.get._2)
   } yield Context[F](
@@ -253,8 +253,8 @@ object EasyApi {
     implicit val tsa: TemplateStorageAlgebra[F] = TemplateStorageApi.make[F](walletConn)
     implicit val fsa: FellowshipStorageAlgebra[F] = FellowshipStorageApi.make[F](walletConn)
     val channelResource = RpcChannelResource.channelResource[F](args.host, args.port, args.secure)
-    implicit val gq: GenusQueryAlgebra[F] = GenusQueryAlgebra.make[F](channelResource)
-    implicit val bq: BifrostQueryAlgebra[F] = BifrostQueryAlgebra.make[F](channelResource)
+    implicit val gq: IndexerQueryAlgebra[F] = IndexerQueryAlgebra.make[F](channelResource)
+    implicit val bq: NodeQueryAlgebra[F] = NodeQueryAlgebra.make[F](channelResource)
     implicit val tba: TransactionBuilderApi[F] =
       TransactionBuilderApi.make[F](args.networkId, args.ledgerId)
 

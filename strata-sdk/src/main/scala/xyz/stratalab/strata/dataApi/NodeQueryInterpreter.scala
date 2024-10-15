@@ -4,29 +4,29 @@ import cats.arrow.FunctionK
 import cats.data.Kleisli
 import cats.effect.kernel.{Resource, Sync}
 import xyz.stratalab.sdk.syntax.ioTransactionAsTransactionSyntaxOps
-import co.topl.node.services.{NodeRpcGrpc, _}
+import xyz.stratalab.node.services.{NodeRpcGrpc, _}
 import io.grpc.ManagedChannel
 
 /**
- * Defines an interpreter for Bifrost Query API.
+ * Defines an interpreter for Node Query API.
  */
-trait BifrostQueryInterpreter {
+trait NodeQueryInterpreter {
 
   def interpretADT[A, F[_]: Sync](
     channelResource: Resource[F, ManagedChannel],
-    computation:     BifrostQueryAlgebra.BifrostQueryADTMonad[A]
+    computation:     NodeQueryAlgebra.NodeQueryADTMonad[A]
   ): F[A] = {
     type ChannelContextKlesli[A] =
       Kleisli[F, (NodeRpcGrpc.NodeRpcBlockingStub, RegtestRpcGrpc.RegtestRpcBlockingStub), A]
     val kleisliComputation = computation.foldMap[ChannelContextKlesli](
-      new FunctionK[BifrostQueryAlgebra.BifrostQueryADT, ChannelContextKlesli] {
+      new FunctionK[NodeQueryAlgebra.NodeQueryADT, ChannelContextKlesli] {
 
         override def apply[A](
-          fa: BifrostQueryAlgebra.BifrostQueryADT[A]
+          fa: NodeQueryAlgebra.NodeQueryADT[A]
         ): ChannelContextKlesli[A] = {
           import cats.implicits._
           fa match {
-            case BifrostQueryAlgebra.MakeBlock(nbOfBlocks) =>
+            case NodeQueryAlgebra.MakeBlock(nbOfBlocks) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -38,7 +38,7 @@ trait BifrostQueryInterpreter {
                   .map(_ => ())
                   .map(_.asInstanceOf[A])
               )
-            case BifrostQueryAlgebra.BlockByDepth(depth) =>
+            case NodeQueryAlgebra.BlockByDepth(depth) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -49,7 +49,7 @@ trait BifrostQueryInterpreter {
                   )
                   .map(_.blockId.asInstanceOf[A])
               )
-            case BifrostQueryAlgebra.FetchBlockHeader(blockId) =>
+            case NodeQueryAlgebra.FetchBlockHeader(blockId) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -60,7 +60,7 @@ trait BifrostQueryInterpreter {
                   )
                   .map(_.header.asInstanceOf[A])
               )
-            case BifrostQueryAlgebra.FetchBlockBody(blockId) =>
+            case NodeQueryAlgebra.FetchBlockBody(blockId) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -71,7 +71,7 @@ trait BifrostQueryInterpreter {
                   )
                   .map(_.body.asInstanceOf[A])
               )
-            case BifrostQueryAlgebra.FetchTransaction(txId) =>
+            case NodeQueryAlgebra.FetchTransaction(txId) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -82,7 +82,7 @@ trait BifrostQueryInterpreter {
                   )
                   .map(_.transaction.asInstanceOf[A])
               )
-            case BifrostQueryAlgebra.BlockByHeight(height) =>
+            case NodeQueryAlgebra.BlockByHeight(height) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -94,7 +94,7 @@ trait BifrostQueryInterpreter {
                   .map(_.blockId.asInstanceOf[A])
               )
 
-            case BifrostQueryAlgebra.SynchronizationTraversal() =>
+            case NodeQueryAlgebra.SynchronizationTraversal() =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(
@@ -103,7 +103,7 @@ trait BifrostQueryInterpreter {
                   )
                   .map(_.asInstanceOf[A])
               )
-            case BifrostQueryAlgebra.BroadcastTransaction(tx) =>
+            case NodeQueryAlgebra.BroadcastTransaction(tx) =>
               Kleisli(blockingStubAndRegTestStub =>
                 Sync[F]
                   .blocking(

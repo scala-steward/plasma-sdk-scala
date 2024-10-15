@@ -2,8 +2,8 @@ package xyz.stratalab.sdk.syntax
 
 import xyz.stratalab.sdk.common.ContainsImmutable.ContainsImmutableTOps
 import xyz.stratalab.sdk.common.ContainsImmutable.instances.seriesPolicyEventImmutable
-import co.topl.brambl.models.Event.SeriesPolicy
-import co.topl.brambl.models.SeriesId
+import xyz.stratalab.sdk.models.Event.SeriesPolicy
+import xyz.stratalab.sdk.models.SeriesId
 import com.google.protobuf.ByteString
 import java.security.MessageDigest
 import scala.language.implicitConversions

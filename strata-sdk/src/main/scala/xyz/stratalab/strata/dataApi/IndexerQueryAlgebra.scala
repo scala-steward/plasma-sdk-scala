@@ -2,17 +2,17 @@ package xyz.stratalab.sdk.dataApi
 
 import cats.effect.kernel.Resource
 import cats.effect.kernel.Sync
-import co.topl.brambl.models.LockAddress
-import co.topl.genus.services.QueryByLockAddressRequest
-import co.topl.genus.services.TransactionServiceGrpc
-import co.topl.genus.services.Txo
-import co.topl.genus.services.TxoState
+import xyz.stratalab.sdk.models.LockAddress
+import xyz.stratalab.indexer.services.QueryByLockAddressRequest
+import xyz.stratalab.indexer.services.TransactionServiceGrpc
+import xyz.stratalab.indexer.services.Txo
+import xyz.stratalab.indexer.services.TxoState
 import io.grpc.ManagedChannel
 
 /**
- * Defines a Genus Query API for interacting with a Genus node.
+ * Defines a Indexer Query API for interacting with a Indexer node.
  */
-trait GenusQueryAlgebra[F[_]] {
+trait IndexerQueryAlgebra[F[_]] {
 
   /**
    * Query and retrieve a set of UTXOs encumbered by the given LockAddress.
@@ -23,10 +23,10 @@ trait GenusQueryAlgebra[F[_]] {
   def queryUtxo(fromAddress: LockAddress, txoState: TxoState = TxoState.UNSPENT): F[Seq[Txo]]
 }
 
-object GenusQueryAlgebra {
+object IndexerQueryAlgebra {
 
-  def make[F[_]: Sync](channelResource: Resource[F, ManagedChannel]): GenusQueryAlgebra[F] =
-    new GenusQueryAlgebra[F] {
+  def make[F[_]: Sync](channelResource: Resource[F, ManagedChannel]): IndexerQueryAlgebra[F] =
+    new IndexerQueryAlgebra[F] {
 
       def queryUtxo(fromAddress: LockAddress, txoState: TxoState = TxoState.UNSPENT): F[Seq[Txo]] = {
         import cats.implicits._

@@ -6,8 +6,8 @@ import cats.Monad
 import cats.implicits.{catsSyntaxApplicativeId, catsSyntaxEitherId, toFlatMapOps}
 import xyz.stratalab.sdk.builders.locks.PropositionTemplate.ThresholdTemplate
 import quivr.models.{Proposition, VerificationKey}
-import co.topl.brambl.models.box.Lock
-import co.topl.brambl.models.box.Challenge
+import xyz.stratalab.sdk.models.box.Lock
+import xyz.stratalab.sdk.models.box.Challenge
 
 trait LockTemplate[F[_]] {
   val lockType: LockType

@@ -6,10 +6,10 @@ import xyz.stratalab.sdk.MockHelpers
 import xyz.stratalab.sdk.MockWalletKeyApi
 import xyz.stratalab.sdk.MockWalletStateApi
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.Datum
-import co.topl.brambl.models.Event
-import co.topl.brambl.models.box._
-import co.topl.brambl.models.transaction.Schedule
+import xyz.stratalab.sdk.models.Datum
+import xyz.stratalab.sdk.models.Event
+import xyz.stratalab.sdk.models.box._
+import xyz.stratalab.sdk.models.transaction.Schedule
 import xyz.stratalab.sdk.syntax.bigIntAsInt128
 import xyz.stratalab.sdk.syntax.longAsInt128
 import xyz.stratalab.sdk.wallet.CredentiallerInterpreter

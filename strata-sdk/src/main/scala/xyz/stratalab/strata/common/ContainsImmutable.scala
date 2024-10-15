@@ -1,10 +1,10 @@
 package xyz.stratalab.sdk.common
 
-import co.topl.brambl.models._
-import co.topl.brambl.models.box.{Attestation, Box, Challenge, FungibilityType, Lock, QuantityDescriptorType, Value}
-import co.topl.brambl.models.common.ImmutableBytes
-import co.topl.brambl.models.transaction._
-import co.topl.consensus.models._
+import xyz.stratalab.sdk.models._
+import xyz.stratalab.sdk.models.box.{Attestation, Box, Challenge, FungibilityType, Lock, QuantityDescriptorType, Value}
+import xyz.stratalab.sdk.models.common.ImmutableBytes
+import xyz.stratalab.sdk.models.transaction._
+import xyz.stratalab.consensus.models._
 import quivr.models.Ratio
 import xyz.stratalab.quivr.Tokens
 import com.google.protobuf.ByteString
@@ -12,8 +12,10 @@ import com.google.protobuf.duration.Duration
 import com.google.protobuf.struct.Struct
 import quivr.models._
 import quivr.models.VerificationKey._
+
 import java.nio.charset.StandardCharsets
 import scala.language.implicitConversions
+import scala.reflect.ClassTag
 
 trait ContainsImmutable[T] {
   def immutableBytes(t: T): ImmutableBytes
@@ -50,6 +52,11 @@ object ContainsImmutable {
       string.getBytes(StandardCharsets.UTF_8)
 
     implicit val structImmutable: ContainsImmutable[Struct] = _.toByteArray.immutable
+
+    implicit def pairImmutable[T: ContainsImmutable: ClassTag, P: ContainsImmutable: ClassTag]
+      : ContainsImmutable[(T, P)] = { case (p: T, t: P) =>
+      t.immutable ++ p.immutable
+    }
 
     implicit def seqImmutable[T: ContainsImmutable]: ContainsImmutable[Seq[T]] = (seq: Seq[T]) =>
       seq.zipWithIndex.foldLeft(ImmutableBytes()) { case (acc, (item, index)) =>
@@ -134,6 +141,7 @@ object ContainsImmutable {
       case Value.Value.Group(v)          => v.immutable
       case Value.Value.Series(v)         => v.immutable
       case Value.Value.UpdateProposal(v) => v.immutable
+      case Value.Value.ConfigProposal(v) => v.immutable
       case Value.Value.Empty             => Array[Byte](0).immutable
     }
 
@@ -243,13 +251,16 @@ object ContainsImmutable {
       up.kesKeyHours.immutable ++
       up.kesKeyMinutes.immutable
 
-    implicit val signatureKesSumImmutable: ContainsImmutable[co.topl.consensus.models.SignatureKesSum] =
+    implicit val configProposalImmutable: ContainsImmutable[Value.ConfigProposal] = (cp: Value.ConfigProposal) =>
+      cp.value.toSeq.immutable
+
+    implicit val signatureKesSumImmutable: ContainsImmutable[xyz.stratalab.consensus.models.SignatureKesSum] =
       v =>
         v.verificationKey.immutable ++
         v.signature.immutable ++
         v.witness.immutable
 
-    implicit val signatureKesProductImmutable: ContainsImmutable[co.topl.consensus.models.SignatureKesProduct] =
+    implicit val signatureKesProductImmutable: ContainsImmutable[xyz.stratalab.consensus.models.SignatureKesProduct] =
       v =>
         v.superSignature.immutable ++
         v.subSignature.immutable ++

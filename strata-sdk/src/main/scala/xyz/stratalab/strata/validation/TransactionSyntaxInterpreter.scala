@@ -6,9 +6,9 @@ import cats.implicits._
 import xyz.stratalab.sdk.builders.MergingOps
 import xyz.stratalab.sdk.common.ContainsImmutable.ContainsImmutableTOps
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
-import co.topl.brambl.models.TransactionOutputAddress
-import co.topl.brambl.models.box._
-import co.topl.brambl.models.transaction.{IoTransaction, SpentTransactionOutput, UnspentTransactionOutput}
+import xyz.stratalab.sdk.models.TransactionOutputAddress
+import xyz.stratalab.sdk.models.box._
+import xyz.stratalab.sdk.models.transaction.{IoTransaction, SpentTransactionOutput, UnspentTransactionOutput}
 import xyz.stratalab.sdk.syntax._
 import xyz.stratalab.sdk.validation.algebras.TransactionSyntaxVerifier
 import quivr.models.{Int128, Proof, Proposition}

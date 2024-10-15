@@ -1,7 +1,7 @@
 package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.display.DisplayOps.DisplayTOps
-import co.topl.brambl.models.box.{AssetMergingStatement, AssetMintingStatement, Value}
+import xyz.stratalab.sdk.models.box.{AssetMergingStatement, AssetMintingStatement, Value}
 import xyz.stratalab.sdk.utils.Encoding
 import xyz.stratalab.sdk.syntax.int128AsBigInt
 

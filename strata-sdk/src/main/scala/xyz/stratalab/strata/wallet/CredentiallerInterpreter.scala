@@ -2,8 +2,8 @@ package xyz.stratalab.sdk.wallet
 
 import cats.{Applicative, Monad}
 import cats.implicits._
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.brambl.models.transaction.SpentTransactionOutput
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.transaction.SpentTransactionOutput
 import xyz.stratalab.sdk.validation.{TransactionAuthorizationInterpreter, TransactionSyntaxInterpreter, ValidationError}
 import xyz.stratalab.sdk.Context
 import xyz.stratalab.sdk.common.ContainsSignable.ContainsSignableTOps
@@ -11,10 +11,10 @@ import xyz.stratalab.sdk.common.ContainsSignable.instances._
 import xyz.stratalab.quivr.api.Prover
 import xyz.stratalab.quivr.api.Verifier.instances.verifierInstance
 import quivr.models.{KeyPair, Proof, Proposition, SignableBytes, Witness}
-import co.topl.brambl.models.Indices
+import xyz.stratalab.sdk.models.Indices
 import cats.data.EitherT
 import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
-import co.topl.brambl.models.box.Attestation
+import xyz.stratalab.sdk.models.box.Attestation
 import xyz.stratalab.crypto.signing.ExtendedEd25519
 import com.google.protobuf.ByteString
 import xyz.stratalab.sdk.syntax.pbKeyPairToCryptoKeyPair

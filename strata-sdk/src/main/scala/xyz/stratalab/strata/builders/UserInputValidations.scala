@@ -2,9 +2,9 @@ package xyz.stratalab.sdk.builders
 
 import cats.data.{Chain, NonEmptyChain, Validated, ValidatedNec}
 import cats.implicits.{catsSyntaxEitherId, catsSyntaxValidatedIdBinCompat0, toFoldableOps}
-import co.topl.brambl.models.box.Value._
-import co.topl.brambl.models.box.{AssetMintingStatement, QuantityDescriptorType}
-import co.topl.brambl.models.{LockAddress, SeriesId, TransactionOutputAddress}
+import xyz.stratalab.sdk.models.box.Value._
+import xyz.stratalab.sdk.models.box.{AssetMintingStatement, QuantityDescriptorType}
+import xyz.stratalab.sdk.models.{LockAddress, SeriesId, TransactionOutputAddress}
 import xyz.stratalab.sdk.syntax.{
   int128AsBigInt,
   longAsInt128,
@@ -16,7 +16,7 @@ import xyz.stratalab.sdk.syntax.{
   UnknownType,
   ValueTypeIdentifier
 }
-import co.topl.genus.services.Txo
+import xyz.stratalab.indexer.services.Txo
 import quivr.models.Int128
 
 import scala.util.{Failure, Success, Try}

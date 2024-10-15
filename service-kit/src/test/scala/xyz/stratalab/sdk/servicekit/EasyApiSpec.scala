@@ -2,14 +2,15 @@ package xyz.stratalab.sdk.servicekit
 
 import cats.Id
 import cats.effect.IO
-import co.topl.brambl.models._
-import co.topl.brambl.models.box.{Challenge, Lock, Value}
-import co.topl.brambl.models.transaction.{IoTransaction, UnspentTransactionOutput}
-import co.topl.consensus.models._
-import co.topl.genus.services.{Txo, TxoState}
-import co.topl.node.models.BlockBody
-import co.topl.node.services.SynchronizationTraversalRes
+import xyz.stratalab.sdk.models._
+import xyz.stratalab.sdk.models.box.{Challenge, Lock, Value}
+import xyz.stratalab.sdk.models.transaction.{IoTransaction, UnspentTransactionOutput}
+import xyz.stratalab.consensus.models._
+import xyz.stratalab.indexer.services.{Txo, TxoState}
+import xyz.stratalab.node.models.BlockBody
+import xyz.stratalab.node.services.SynchronizationTraversalRes
 import com.google.protobuf.ByteString
+import xyz.stratalab.sdk.models.Indices
 import munit.CatsEffectSuite
 import xyz.stratalab.quivr.api.Proposer
 import xyz.stratalab.sdk.builders.TransactionBuilderApi
@@ -130,7 +131,7 @@ class EasyApiSpec extends CatsEffectSuite with BaseSpec {
     implicit val walletApi: WalletApi[IO] = original.walletApi
     implicit val transactionBuilderApi: TransactionBuilderApi[IO] = original.transactionBuilderApi
     implicit val credentialler: Credentialler[IO] = original.credentialler
-    implicit val genusQueryAlgebra: GenusQueryAlgebra[IO] = (_: LockAddress, _: TxoState) =>
+    implicit val genusQueryAlgebra: IndexerQueryAlgebra[IO] = (_: LockAddress, _: TxoState) =>
       IO.pure(
         Seq(
           Txo(
@@ -144,7 +145,7 @@ class EasyApiSpec extends CatsEffectSuite with BaseSpec {
           )
         )
       )
-    implicit val bifrostQueryAlgebra: BifrostQueryAlgebra[IO] = new BifrostQueryAlgebra[IO] {
+    implicit val nodeQueryAlgebra: NodeQueryAlgebra[IO] = new NodeQueryAlgebra[IO] {
 
       override def blockByDepth(depth: Long): IO[Option[(BlockId, BlockHeader, BlockBody, Seq[IoTransaction])]] =
         IO.pure(

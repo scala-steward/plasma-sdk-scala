@@ -1,8 +1,8 @@
 package xyz.stratalab.sdk.codecs
 
-import co.topl.brambl.models.LockAddress
+import xyz.stratalab.sdk.models.LockAddress
 import xyz.stratalab.sdk.constants.NetworkConstants
-import co.topl.brambl.models.LockId
+import xyz.stratalab.sdk.models.LockId
 import com.google.protobuf.ByteString
 
 trait AddressCodecTestCases {

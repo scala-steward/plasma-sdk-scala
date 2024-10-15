@@ -1,8 +1,8 @@
 package xyz.stratalab.sdk.builders
 
-import co.topl.brambl.models.transaction.IoTransaction
-import co.topl.brambl.models.Datum
-import co.topl.brambl.models.box.Value
+import xyz.stratalab.sdk.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.Datum
+import xyz.stratalab.sdk.models.box.Value
 import xyz.stratalab.sdk.syntax.{ioTransactionAsTransactionSyntaxOps, valueToTypeIdentifierSyntaxOps, LvlType}
 
 class TransactionBuilderInterpreterGroupMintingSpec extends TransactionBuilderInterpreterSpecBase {

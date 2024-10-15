@@ -1,9 +1,9 @@
 package xyz.stratalab.sdk.builders
 
-import co.topl.brambl.models.box.FungibilityType.GROUP
-import co.topl.brambl.models.box.QuantityDescriptorType.LIQUID
-import co.topl.brambl.models.box.{AssetMergingStatement, Value}
-import co.topl.brambl.models.transaction.IoTransaction
+import xyz.stratalab.sdk.models.box.FungibilityType.GROUP
+import xyz.stratalab.sdk.models.box.QuantityDescriptorType.LIQUID
+import xyz.stratalab.sdk.models.box.{AssetMergingStatement, Value}
+import xyz.stratalab.sdk.models.transaction.IoTransaction
 import xyz.stratalab.sdk.syntax.ioTransactionAsTransactionSyntaxOps
 import xyz.stratalab.sdk.syntax.bigIntAsInt128
 import com.google.protobuf.struct.{Struct, Value => StructValue}

@@ -3,8 +3,6 @@ package xyz.stratalab.sdk.servicekit
 import cats.data.{OptionT, Validated, ValidatedNel}
 import cats.effect.kernel.{Resource, Sync}
 import cats.implicits._
-import co.topl.brambl.models.box.Lock
-import co.topl.brambl.models.{Indices, LockAddress, LockId}
 import com.google.protobuf.ByteString
 import io.circe.parser._
 import io.circe.syntax.EncoderOps
@@ -16,6 +14,8 @@ import xyz.stratalab.sdk.codecs.LockTemplateCodecs.{decodeLockTemplate, encodeLo
 import xyz.stratalab.sdk.common.ContainsEvidence.Ops
 import xyz.stratalab.sdk.common.ContainsImmutable.instances._
 import xyz.stratalab.sdk.dataApi.WalletStateAlgebra
+import xyz.stratalab.sdk.models.box.Lock
+import xyz.stratalab.sdk.models.{Indices, LockAddress, LockId}
 import xyz.stratalab.sdk.utils.Encoding
 import xyz.stratalab.sdk.wallet.WalletApi
 

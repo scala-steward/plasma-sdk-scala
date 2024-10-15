@@ -1,7 +1,7 @@
 package xyz.stratalab.sdk.display
 
 import xyz.stratalab.sdk.utils.Encoding
-import co.topl.consensus.models.BlockId
+import xyz.stratalab.consensus.models.BlockId
 
 trait BlockDisplayOps {
 

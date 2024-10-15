@@ -12,10 +12,10 @@ import xyz.stratalab.sdk.builders.TransactionBuilderInterpreterSpecBase.{
 }
 import xyz.stratalab.sdk.common.ContainsImmutable.ContainsImmutableTOps
 import xyz.stratalab.sdk.common.ContainsImmutable.instances.{spentOutputImmutable, unspentOutputImmutable}
-import co.topl.brambl.models.Event.{GroupPolicy, SeriesPolicy}
-import co.topl.brambl.models.box.{AssetMintingStatement, Lock, Value}
-import co.topl.brambl.models.transaction.{IoTransaction, SpentTransactionOutput, UnspentTransactionOutput}
-import co.topl.brambl.models.{LockAddress, TransactionOutputAddress}
+import xyz.stratalab.sdk.models.Event.{GroupPolicy, SeriesPolicy}
+import xyz.stratalab.sdk.models.box.{AssetMintingStatement, Lock, Value}
+import xyz.stratalab.sdk.models.transaction.{IoTransaction, SpentTransactionOutput, UnspentTransactionOutput}
+import xyz.stratalab.sdk.models.{LockAddress, TransactionOutputAddress}
 import xyz.stratalab.sdk.syntax.{
   assetAsBoxVal,
   groupAsBoxVal,
@@ -28,9 +28,9 @@ import xyz.stratalab.sdk.syntax.{
   LvlType,
   ValueTypeIdentifier
 }
-import co.topl.consensus.models.{SignatureKesProduct, SignatureKesSum, StakingAddress, StakingRegistration}
-import co.topl.genus.services.Txo
-import co.topl.genus.services.TxoState.UNSPENT
+import xyz.stratalab.consensus.models.{SignatureKesProduct, SignatureKesSum, StakingAddress, StakingRegistration}
+import xyz.stratalab.indexer.services.Txo
+import xyz.stratalab.indexer.services.TxoState.UNSPENT
 import com.google.protobuf.ByteString
 
 trait TransactionBuilderInterpreterSpecBase extends munit.FunSuite with MockHelpers {

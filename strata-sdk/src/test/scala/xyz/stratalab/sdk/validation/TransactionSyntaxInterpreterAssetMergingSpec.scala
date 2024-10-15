@@ -6,10 +6,10 @@ import xyz.stratalab.sdk.MockHelpers
 import xyz.stratalab.sdk.builders.MergingOps
 import xyz.stratalab.sdk.common.ContainsEvidence.Ops
 import xyz.stratalab.sdk.common.ContainsImmutable.instances.lockImmutable
-import co.topl.brambl.models.box._
-import co.topl.brambl.models.transaction.{IoTransaction, SpentTransactionOutput, UnspentTransactionOutput}
-import co.topl.brambl.models.{GroupId, LockAddress, LockId, SeriesId}
-import co.topl.genus.services.Txo
+import xyz.stratalab.sdk.models.box._
+import xyz.stratalab.sdk.models.transaction.{IoTransaction, SpentTransactionOutput, UnspentTransactionOutput}
+import xyz.stratalab.sdk.models.{GroupId, LockAddress, LockId, SeriesId}
+import xyz.stratalab.indexer.services.Txo
 import com.google.protobuf.ByteString
 import quivr.models.Int128
 
