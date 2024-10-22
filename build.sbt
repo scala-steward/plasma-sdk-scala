@@ -1,7 +1,7 @@
 inThisBuild(
   List(
-    organization := "xyz.stratalab",
-    homepage := Some(url("https://github.com/Stratalab/strata-sdk-scala")),
+    organization := "org.plasmalabs",
+    homepage := Some(url("https://github.com/PlasmaLaboratories/plasma-sdk-scala")),
     licenses := Seq("MPL2.0" -> url("https://www.mozilla.org/en-US/MPL/2.0/")),
     scalaVersion := "2.13.13",
     testFrameworks += TestFrameworks.MUnit
@@ -47,7 +47,7 @@ lazy val commonSettings = Seq(
 )
 
 lazy val publishSettings = Seq(
-  homepage := Some(url("https://github.com/Stratalab/strata-sdk-scala")),
+  homepage := Some(url("https://github.com/PlasmaLaboratories/plasma-sdk-scala")),
   ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org",
   sonatypeRepository := "https://s01.oss.sonatype.org/service/local",
   Test / publishArtifact := false,
@@ -114,17 +114,17 @@ lazy val quivr4s = project
   )
   .dependsOn(crypto)
 
-lazy val strataSdk = project
-  .in(file("strata-sdk"))
+lazy val plasmaSdk = project
+  .in(file("plasma-sdk"))
   .settings(
-    name := "strata-sdk",
+    name := "plasma-sdk",
     commonSettings,
     publishSettings,
     Test / publishArtifact := true,
     Test / parallelExecution := false,
     libraryDependencies ++=
-      Dependencies.StrataSdk.sources ++
-      Dependencies.StrataSdk.tests
+      Dependencies.PlasmaSdk.sources ++
+      Dependencies.PlasmaSdk.tests
   )
   .dependsOn(quivr4s % "compile->compile;test->test")
 
@@ -140,7 +140,7 @@ lazy val serviceKit = project
       Dependencies.ServiceKit.sources ++
         Dependencies.ServiceKit.tests
   )
-  .dependsOn(strataSdk)
+  .dependsOn(plasmaSdk)
 
 lazy val integration = project
   .in(file("integration"))
@@ -149,14 +149,14 @@ lazy val integration = project
     publish / skip := true,
     libraryDependencies ++= Dependencies.IntegrationTests.sources ++ Dependencies.IntegrationTests.tests
   )
-  .dependsOn(strataSdk)
+  .dependsOn(plasmaSdk)
 
 val DocumentationRoot = file("documentation") / "static" / "scaladoc" / "current"
 
-lazy val strata = project
+lazy val plasma = project
   .in(file("."))
   .settings(
-    moduleName := "strata",
+    moduleName := "plasma",
     commonSettings,
     publish / skip := true,
     // Currently excluding crypto since there are issues due to the use of macro annotations
@@ -166,7 +166,7 @@ lazy val strata = project
   .enablePlugins(ReproducibleBuildsPlugin, ScalaUnidocPlugin)
   .aggregate(
     crypto,
-    strataSdk,
+    plasmaSdk,
     serviceKit,
     quivr4s
   )

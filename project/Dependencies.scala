@@ -7,7 +7,7 @@ object Dependencies {
     val catsCoreVersion = "2.10.0"
     val simulacrumVersion = "1.0.1"
     val circeVersion = "0.14.6"
-    val protobufSpecsVersion = "0.1.0+4-d8600bac-SNAPSHOT"
+    val protobufSpecsVersion = "0.1.1"
     val mUnitTeVersion = "0.7.29"
     val btcVersion = "1.9.9"
     val btcVersionZmq = "1.9.8"
@@ -62,7 +62,7 @@ object Dependencies {
   )
 
   val protobufSpecs: Seq[ModuleID] = Seq(
-    "xyz.stratalab" %% "protobuf-fs2" % protobufSpecsVersion
+    "org.plasmalabs" %% "protobuf-fs2" % protobufSpecsVersion
   )
 
   val sqlite: Seq[ModuleID] = Seq(
@@ -95,7 +95,7 @@ object Dependencies {
         .map(_ % Test)
   }
 
-  object StrataSdk {
+  object PlasmaSdk {
 
     lazy val sources: Seq[ModuleID] = Dependencies.protobufSpecs ++ btc :+ grpcNetty
 
@@ -118,7 +118,7 @@ object Dependencies {
   object IntegrationTests {
 
     lazy val sources: Seq[ModuleID] =
-      Crypto.sources ++ StrataSdk.sources ++ ServiceKit.sources :+ fs2Io
+      Crypto.sources ++ PlasmaSdk.sources ++ ServiceKit.sources :+ fs2Io
     lazy val tests: Seq[ModuleID] = (sources ++ mUnitTest).map(_ % Test)
   }
 
