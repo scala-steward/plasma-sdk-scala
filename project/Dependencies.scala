@@ -5,12 +5,9 @@ object Dependencies {
 
   object Versions {
     val catsCoreVersion = "2.10.0"
-    val simulacrumVersion = "1.0.1"
     val circeVersion = "0.14.6"
     val protobufSpecsVersion = "0.1.1"
     val mUnitTeVersion = "0.7.29"
-    val btcVersion = "1.9.9"
-    val btcVersionZmq = "1.9.8"
   }
 
   val catsSlf4j: ModuleID =
@@ -30,13 +27,12 @@ object Dependencies {
   )
 
   val scalamock: Seq[ModuleID] = Seq(
-    "org.scalamock" %% "scalamock" % "5.2.0"
+    "org.scalamock" %% "scalamock" % "6.0.0"
   )
 
   val scalatest: Seq[ModuleID] = Seq(
-    "org.scalatest"    %% "scalatest"                     % "3.2.18",
-    "com.ironcorelabs" %% "cats-scalatest"                % "3.1.1",
-    "org.typelevel"    %% "cats-effect-testing-scalatest" % "1.5.0"
+    "org.scalatest" %% "scalatest"                     % "3.2.18",
+    "org.typelevel" %% "cats-effect-testing-scalatest" % "1.5.0"
   )
 
   val mUnitTest: Seq[ModuleID] = Seq(
@@ -46,19 +42,11 @@ object Dependencies {
     "org.typelevel" %% "scalacheck-effect-munit" % "1.0.4"
   )
 
-  val newType: Seq[ModuleID] = Seq(
-    "io.estatico" %% "newtype" % "0.4.4"
-  )
-
   val cats: Seq[ModuleID] = Seq(
     "org.typelevel" %% "cats-core"   % catsCoreVersion,
     "org.typelevel" %% "mouse"       % "1.2.3",
     "org.typelevel" %% "cats-free"   % catsCoreVersion,
     "org.typelevel" %% "cats-effect" % "3.5.4"
-  )
-
-  val simulacrum: Seq[ModuleID] = Seq(
-    "org.typelevel" %% "simulacrum" % simulacrumVersion
   )
 
   val protobufSpecs: Seq[ModuleID] = Seq(
@@ -76,9 +64,7 @@ object Dependencies {
     lazy val sources: Seq[ModuleID] =
       Seq("org.bouncycastle" % "bcprov-jdk18on" % "1.77") ++
       circe ++
-      newType ++
-      cats ++
-      simulacrum
+      cats
 
     lazy val tests: Seq[ModuleID] =
       (
@@ -91,7 +77,7 @@ object Dependencies {
 
   object PlasmaSdk {
 
-    lazy val sources: Seq[ModuleID] = Dependencies.protobufSpecs :+ grpcNetty
+    lazy val sources: Seq[ModuleID] = protobufSpecs :+ grpcNetty
 
     lazy val tests: Seq[ModuleID] =
       (
@@ -111,10 +97,8 @@ object Dependencies {
 
   object Quivr4s {
 
-    lazy val sources: Seq[ModuleID] = Dependencies.protobufSpecs
+    lazy val sources: Seq[ModuleID] = protobufSpecs
 
-    lazy val tests: Seq[ModuleID] = (
-      mUnitTest
-    ).map(_ % Test)
+    lazy val tests: Seq[ModuleID] = mUnitTest.map(_ % Test)
   }
 }

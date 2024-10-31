@@ -1,10 +1,12 @@
+val scala213 = "2.13.13"
+val scala33 = "3.4.1"
+
 inThisBuild(
   List(
     organization := "org.plasmalabs",
     homepage := Some(url("https://github.com/PlasmaLaboratories/plasma-sdk-scala")),
     licenses := Seq("MPL2.0" -> url("https://www.mozilla.org/en-US/MPL/2.0/")),
-    scalaVersion := "2.13.13",
-    testFrameworks += TestFrameworks.MUnit
+    scalaVersion := scala213
   )
 )
 
@@ -13,22 +15,24 @@ lazy val commonScalacOptions = Seq(
   "-feature",
   "-language:higherKinds",
   "-language:postfixOps",
-  "-unchecked",
-  "-Ywarn-unused",
-  "-Yrangepos"
+  "-unchecked"
 )
 
 lazy val commonSettings = Seq(
   fork := true,
-  scalacOptions ++= commonScalacOptions,
-  semanticdbEnabled := true, // enable SemanticDB for Scalafix
-  Compile / unmanagedSourceDirectories += {
-    val sourceDir = (Compile / sourceDirectory).value
+  Compile / scalacOptions ++= commonScalacOptions,
+  Compile / scalacOptions ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, n)) if n >= 13 => sourceDir / "scala-2.13+"
-      case _                       => sourceDir / "scala-2.12-"
+      case Some((2, v)) if v >= 13 =>
+        Seq(
+          "-Ywarn-unused:-implicits,-privates",
+          "-Yrangepos"
+        )
+      case _ =>
+        Nil
     }
   },
+  semanticdbEnabled := true, // enable SemanticDB for Scalafix
   Test / testOptions ++= Seq(
     Tests.Argument(TestFrameworks.ScalaCheck, "-verbosity", "2"),
     Tests.Argument(TestFrameworks.ScalaTest, "-f", "sbttest.log", "-oDGG", "-u", "target/test-reports")
@@ -41,9 +45,16 @@ lazy val commonSettings = Seq(
     "Bintray" at "https://jcenter.bintray.com/",
     "jitpack" at "https://jitpack.io"
   ),
-  addCompilerPlugin("org.typelevel" % "kind-projector"     % "0.13.3" cross CrossVersion.full),
-  addCompilerPlugin("com.olegpy"   %% "better-monadic-for" % "0.3.1"),
-  testFrameworks += TestFrameworks.MUnit
+  libraryDependencies ++= {
+    scalaVersion.value match {
+      case `scala33` =>
+        Nil
+      case _ =>
+        List(
+          compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
+        )
+    }
+  }
 )
 
 lazy val publishSettings = Seq(
@@ -93,6 +104,7 @@ lazy val crypto = project
     name := "crypto",
     commonSettings,
     publishSettings,
+    crossScalaVersions := Seq(scala213, scala33),
     Test / publishArtifact := true,
     libraryDependencies ++=
       Dependencies.Crypto.sources ++
@@ -106,6 +118,7 @@ lazy val quivr4s = project
     name := "quivr4s",
     commonSettings,
     publishSettings,
+    crossScalaVersions := Seq(scala213, scala33),
     Test / publishArtifact := true,
     Test / parallelExecution := false,
     libraryDependencies ++=
@@ -120,11 +133,12 @@ lazy val plasmaSdk = project
     name := "plasma-sdk",
     commonSettings,
     publishSettings,
+    crossScalaVersions := Seq(scala213, scala33),
     Test / publishArtifact := true,
     Test / parallelExecution := false,
     libraryDependencies ++=
       Dependencies.PlasmaSdk.sources ++
-      Dependencies.PlasmaSdk.tests
+      Dependencies.PlasmaSdk.tests,
   )
   .dependsOn(quivr4s % "compile->compile;test->test")
 
@@ -134,6 +148,7 @@ lazy val serviceKit = project
     name := "service-kit",
     commonSettings,
     publishSettings,
+    crossScalaVersions := Seq(scala213, scala33),
     Test / publishArtifact := true,
     Test / parallelExecution := false,
     libraryDependencies ++=
@@ -149,10 +164,12 @@ lazy val plasma = project
   .settings(
     moduleName := "plasma",
     commonSettings,
+    // crossScalaVersions must be set to Nil on the aggregating project
+    crossScalaVersions := Nil,
     publish / skip := true,
     // Currently excluding crypto since there are issues due to the use of macro annotations
     ScalaUnidoc / unidoc / unidocProjectFilter := inAnyProject -- inProjects(crypto),
-    ScalaUnidoc / unidoc / target := DocumentationRoot,
+    ScalaUnidoc / unidoc / target := DocumentationRoot
   )
   .enablePlugins(ReproducibleBuildsPlugin, ScalaUnidocPlugin)
   .aggregate(
@@ -162,6 +179,6 @@ lazy val plasma = project
     quivr4s
   )
 
-addCommandAlias("checkPR", s"; scalafixAll --check; scalafmtCheckAll; +coverage; +test; +coverageReport")
+addCommandAlias("checkPR", s"; scalafixAll --check; scalafmtCheckAll; coverage; +test; coverageReport")
 addCommandAlias("preparePR", s"; scalafixAll; scalafmtAll; +test; unidoc")
-addCommandAlias("checkPRTestQuick", s"; scalafixAll --check; scalafmtCheckAll; testQuick")
+addCommandAlias("checkPRTestQuick", s"; scalafixAll --check; scalafmtCheckAll; +testQuick")
