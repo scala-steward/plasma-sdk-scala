@@ -1,5 +1,6 @@
 package org.plasmalabs.sdk.builders
 
+import org.plasmalabs.sdk.models.Event
 import org.plasmalabs.sdk.models.box.FungibilityType.GROUP_AND_SERIES
 import org.plasmalabs.sdk.models.box.QuantityDescriptorType.LIQUID
 import org.plasmalabs.sdk.models.box.Value
@@ -60,7 +61,7 @@ class BasicTransactionBuilderInterpreterSpec extends TransactionBuilderInterpret
   }
 
   test("datum") {
-    val testDatum = txBuilder.datum()
+    val testDatum = txBuilder.datum(Event.IoTransaction.Policies())
     // Testing fields individually since the timestamp is generated at runtime
     assert(testDatum.event.metadata == txDatum.event.metadata)
     assert(testDatum.event.schedule.min == txDatum.event.schedule.min)

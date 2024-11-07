@@ -1,17 +1,16 @@
 package org.plasmalabs.sdk.builders
 
-import cats.implicits.catsSyntaxOptionId
+import cats.implicits.{catsSyntaxOptionId, showInterpolator}
 import org.plasmalabs.sdk.common.ContainsEvidence.Ops
 import org.plasmalabs.sdk.common.ContainsImmutable.instances.lockImmutable
-import org.plasmalabs.sdk.models.LockAddress
-import org.plasmalabs.sdk.models.LockId
+import org.plasmalabs.sdk.models.{AssetMergingStatement, Datum, Event, LockAddress, LockId}
 import org.plasmalabs.sdk.models.box.FungibilityType.GROUP
 import org.plasmalabs.sdk.models.box.FungibilityType.SERIES
 import org.plasmalabs.sdk.models.box.QuantityDescriptorType.ACCUMULATOR
 import org.plasmalabs.sdk.models.box.QuantityDescriptorType.FRACTIONABLE
 import org.plasmalabs.sdk.models.box.QuantityDescriptorType.IMMUTABLE
 import org.plasmalabs.sdk.models.box.Value
-import org.plasmalabs.sdk.models.transaction.IoTransaction
+import org.plasmalabs.sdk.models.transaction.{IoTransaction, Schedule}
 import org.plasmalabs.sdk.syntax.LvlType
 import org.plasmalabs.sdk.syntax.assetAsBoxVal
 import org.plasmalabs.sdk.syntax.bigIntAsInt128
@@ -22,7 +21,7 @@ import org.plasmalabs.sdk.syntax.ioTransactionAsTransactionSyntaxOps
 import org.plasmalabs.sdk.syntax.seriesAsBoxVal
 import org.plasmalabs.sdk.syntax.seriesPolicyAsSeriesPolicySyntaxOps
 import org.plasmalabs.sdk.syntax.valueToTypeIdentifierSyntaxOps
-import quivr.models.Int128
+import org.plasmalabs.quivr.models.{Int128, SmallData}
 
 class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderInterpreterSpecBase {
 
@@ -227,8 +226,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       newSeries :+ newGroup :+ newLvl
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -250,8 +258,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(groupValue, txAddr = mockGroupPolicyAlt.registrationUtxo) :+
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo)
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -286,8 +303,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -329,8 +355,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -371,8 +406,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -407,8 +451,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -437,8 +490,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -469,8 +531,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       groupTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -499,8 +570,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -532,8 +612,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
@@ -565,8 +654,17 @@ class TransactionBuilderInterpreterAssetMintingSpec extends TransactionBuilderIn
       valToTxo(seriesValue, txAddr = mockSeriesPolicyAlt.registrationUtxo) :+
       seriesTxo
     val expectedTx = IoTransaction.defaultInstance
-      .withDatum(txDatum)
-      .withMintingStatements(Seq(mockAssetMintingStatement))
+      .withDatum(
+        Datum.IoTransaction(
+          Event
+            .IoTransaction(
+              Schedule(0, Long.MaxValue, System.currentTimeMillis),
+              SmallData.defaultInstance,
+              Event.IoTransaction.Policies.defaultInstance
+                .withMintingStatements(Seq(mockAssetMintingStatement))
+            )
+        )
+      )
       .withInputs(buildStxos(allTxos))
       .withOutputs(
         // minted output
