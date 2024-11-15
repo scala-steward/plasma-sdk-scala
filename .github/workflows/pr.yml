@@ -12,12 +12,16 @@ jobs:
       target-os: >-
         ["ubuntu-latest"]
       java-versions: >-
-        ["11"]
-      preserve-cache-between-runs: true
+        ["8"]
   maven-release:
-    uses: ./.github/workflows/maven_release.yml
+    uses: ./.github/workflows/_maven_release.yml
     needs: sbt-build
     secrets: inherit
+    with:
+      target-os: >-
+        ["ubuntu-latest"]
+      java-versions: >-
+        ["8"]
   # deploy-docs:
   #   uses: ./.github/workflows/deploy_docs.yml
   #   needs: sbt-build
