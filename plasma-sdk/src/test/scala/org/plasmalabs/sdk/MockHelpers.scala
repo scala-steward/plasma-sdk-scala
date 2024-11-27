@@ -38,6 +38,11 @@ import org.plasmalabs.crypto.hash.implicits.sha256Hash
 import org.plasmalabs.crypto.generation.Bip32Indexes
 import org.plasmalabs.crypto.hash.Blake2b256
 import org.plasmalabs.crypto.signing.ExtendedEd25519
+import org.plasmalabs.sdk.constants.NetworkConstants.PRIVATE_NETWORK_ID
+import org.plasmalabs.sdk.constants.NetworkConstants.MAIN_LEDGER_ID
+import org.plasmalabs.sdk.constants.NetworkConstants.ACCOUNT_LEDGER_ID
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerPrivate
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerPrivate
 
 trait MockHelpers {
   type F[A] = IO[A]
@@ -111,8 +116,8 @@ trait MockHelpers {
 
   val dummyTxoAddress: TransactionOutputAddress =
     TransactionOutputAddress(
-      0,
-      0,
+      PRIVATE_NETWORK_ID,
+      MAIN_LEDGER_ID,
       0,
       dummyTxIdentifier
     )
@@ -121,11 +126,48 @@ trait MockHelpers {
 
   val lvlValue: Value = Value.defaultInstance.withLvl(Value.LVL(quantity))
 
+  val assetValue1: Value = Value.defaultInstance.withAsset(
+    Value.Asset(
+      Some(GroupId(ByteString.copyFrom(Array.fill[Byte](12)(0) ++ Array.fill[Byte](20)(1)))),
+      Some(SeriesId(ByteString.copyFrom(Array.fill[Byte](12)(0) ++ Array.fill[Byte](20)(1)))),
+      quantity
+    )
+  )
+
+  val assetValue2: Value = Value.defaultInstance.withAsset(
+    Value.Asset(
+      Some(GroupPolicyAccountLedgerPrivate.computeId),
+      Some(SeriesPolicyAccountLedgerPrivate.computeId),
+      quantity
+    )
+  )
+
+  val assetValue3: Value = Value.defaultInstance.withAsset(
+    Value.Asset(
+      Some(GroupPolicyAccountLedgerPrivate.computeId),
+      Some(SeriesPolicyAccountLedgerPrivate.computeId),
+      Int128(ByteString.copyFrom(BigInt(2).toByteArray))
+    )
+  )
+
   val trivialOutLock: Lock =
     Lock().withPredicate(Lock.Predicate(List(Challenge().withRevealed(Proposer.tickProposer[Id].propose(5, 15))), 1))
 
   val trivialLockAddress: LockAddress =
-    LockAddress(0, 0, LockId(trivialOutLock.sizedEvidence.digest.value))
+    LockAddress(PRIVATE_NETWORK_ID, MAIN_LEDGER_ID, LockId(trivialOutLock.sizedEvidence.digest.value))
+
+  val trivialAccountLedgerLockAddress0: LockAddress =
+    LockAddress(PRIVATE_NETWORK_ID, ACCOUNT_LEDGER_ID, LockId(trivialOutLock.sizedEvidence.digest.value))
+
+  val trivialAccountLedgerLockAddress1: LockAddress =
+    LockAddress(PRIVATE_NETWORK_ID, ACCOUNT_LEDGER_ID, LockId(trivialOutLock.sizedEvidence.digest.value))
+
+  val trivialAccountLockAddress2: LockAddress =
+    LockAddress(
+      PRIVATE_NETWORK_ID,
+      ACCOUNT_LEDGER_ID,
+      LockId(ByteString.copyFrom(Array.fill[Byte](12)(0) ++ Array.fill[Byte](20)(1)))
+    )
 
   val inPredicateLockFull: Lock.Predicate = Lock.Predicate(
     List(
@@ -140,7 +182,9 @@ trait MockHelpers {
   )
 
   val inLockFull: Lock = Lock().withPredicate(inPredicateLockFull)
-  val inLockFullAddress: LockAddress = LockAddress(0, 0, LockId(inLockFull.sizedEvidence.digest.value))
+
+  val inLockFullAddress: LockAddress =
+    LockAddress(PRIVATE_NETWORK_ID, MAIN_LEDGER_ID, LockId(inLockFull.sizedEvidence.digest.value))
 
   val inPredicateLockFullAttestation: Attestation.Predicate = Attestation.Predicate(
     inPredicateLockFull,
@@ -157,6 +201,20 @@ trait MockHelpers {
 
   val output: UnspentTransactionOutput = UnspentTransactionOutput(trivialLockAddress, lvlValue)
 
+  val outputAccountLedger0: UnspentTransactionOutput =
+    UnspentTransactionOutput(trivialAccountLedgerLockAddress0, lvlValue)
+
+  val outputAccountLedger1: UnspentTransactionOutput =
+    UnspentTransactionOutput(trivialAccountLedgerLockAddress1, lvlValue)
+
+  val outputAccountLedger2: UnspentTransactionOutput =
+    UnspentTransactionOutput(trivialAccountLedgerLockAddress0, lvlValue)
+
+  val outputAccountLedger3: UnspentTransactionOutput =
+    UnspentTransactionOutput(trivialAccountLedgerLockAddress0, assetValue1)
+
+  val outputAccountLedger4: UnspentTransactionOutput = UnspentTransactionOutput(trivialAccountLockAddress2, assetValue2)
+
   val fullOutput: UnspentTransactionOutput = UnspentTransactionOutput(inLockFullAddress, lvlValue)
 
   val attFull: Attestation = Attestation().withPredicate(
@@ -164,6 +222,10 @@ trait MockHelpers {
   )
 
   val inputFull: SpentTransactionOutput = SpentTransactionOutput(dummyTxoAddress, attFull, lvlValue)
+
+  val inputFullAccountLedger0: SpentTransactionOutput = SpentTransactionOutput(dummyTxoAddress, attFull, assetValue2)
+
+  val inputFullAccountLedger1: SpentTransactionOutput = SpentTransactionOutput(dummyTxoAddress, attFull, assetValue3)
 
   val txFull: IoTransaction =
     IoTransaction.defaultInstance.withInputs(List(inputFull)).withOutputs(List(output)).withDatum(txDatum)

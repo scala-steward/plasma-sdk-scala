@@ -13,6 +13,26 @@ import org.plasmalabs.sdk.syntax._
 import org.plasmalabs.sdk.validation.algebras.TransactionSyntaxVerifier
 import org.plasmalabs.quivr.models.{Int128, Proof, Proposition}
 import scala.util.Try
+import org.plasmalabs.sdk.constants.NetworkConstants.MAIN_LEDGER_ID
+import org.plasmalabs.sdk.constants.NetworkConstants.ACCOUNT_LEDGER_ID
+import org.plasmalabs.sdk.models.GroupPolicy
+import org.plasmalabs.sdk.constants.NetworkConstants
+import org.plasmalabs.sdk.models.TransactionId
+import com.google.protobuf.ByteString
+import org.plasmalabs.sdk.models.SeriesPolicy
+import org.plasmalabs.sdk.models.box.Value.Value.Asset
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerMainnet
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerMainnet
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerTestnet
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerPrivate
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerTestnet
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerPrivate
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerMainnetId
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerMainnetId
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerTestnetId
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.SeriesPolicyAccountLedgerPrivateId
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerTestnetId
+import org.plasmalabs.sdk.constants.AccountLedgerConstants.GroupPolicyAccountLedgerPrivateId
 
 object TransactionSyntaxInterpreter {
 
@@ -21,14 +41,23 @@ object TransactionSyntaxInterpreter {
   def make[F[_]: Applicative](): TransactionSyntaxVerifier[F] = new TransactionSyntaxVerifier[F] {
 
     override def validate(t: IoTransaction): F[Either[NonEmptyChain[TransactionSyntaxError], IoTransaction]] =
-      validators
-        .foldMap(_ apply t)
-        .toEither
-        .as(t)
-        .pure[F]
+      if (isType0(t))
+        validatorsType0
+          .foldMap(_ apply t)
+          .toEither
+          .as(t)
+          .pure[F]
+      else if (isType1(t))
+        validatorsType1
+          .foldMap(_ apply t)
+          .toEither
+          .as(t)
+          .pure[F]
+      else
+        Applicative[F].pure(Left(NonEmptyChain(TransactionSyntaxError.InvalidTransactionType)))
   }
 
-  private val validators: Chain[IoTransaction => ValidatedNec[TransactionSyntaxError, Unit]] =
+  private val validatorsType0: Chain[IoTransaction => ValidatedNec[TransactionSyntaxError, Unit]] =
     Chain(
       nonEmptyInputsValidation,
       distinctInputsValidation,
@@ -49,6 +78,104 @@ object TransactionSyntaxInterpreter {
       mergingValidation,
       lockAddressesNetworkIdValidation
     )
+
+  private val validatorsType1: Chain[IoTransaction => ValidatedNec[TransactionSyntaxError, Unit]] =
+    Chain(
+      nonEmptyInputsValidation,
+      distinctInputsValidation,
+      oneOutputCountValidation,
+      noStatementsValidation,
+      rightOutputAddressAccountLedger,
+      rightOutputType,
+      nonNegativeTimestampValidation,
+      scheduleValidation,
+      positiveOutputValuesValidation,
+      sufficientFundsValidation,
+      attestationValidation,
+      dataLengthValidation,
+      assetEqualFundsValidation,
+      groupEqualFundsValidation,
+      seriesEqualFundsValidation,
+      mintingValidation
+    )
+
+  private def isType0(transaction: IoTransaction): Boolean =
+    transaction.inputs.forall(_.address.ledger == MAIN_LEDGER_ID) &&
+    transaction.outputs.forall(_.address.ledger == MAIN_LEDGER_ID)
+
+  private def isType1(transaction: IoTransaction): Boolean =
+    transaction.inputs.forall(_.address.ledger == MAIN_LEDGER_ID) &&
+    transaction.outputs.forall(_.address.ledger == ACCOUNT_LEDGER_ID)
+
+  /**
+   * Validate that no statements are present in the transaction. This is a requirement
+   * for type 1 transactions.
+   * @param transaction The transaction to validate.
+   */
+  private def noStatementsValidation(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] =
+    Validated.condNec(
+      transaction.datum.event.mintingStatements.isEmpty &&
+      transaction.datum.event.groupPolicies.isEmpty &&
+      transaction.datum.event.seriesPolicies.isEmpty &&
+      transaction.datum.event.mergingStatements.isEmpty,
+      (),
+      TransactionSyntaxError.NoStatementsAllowed
+    )
+
+  /**
+   * Validate that the asset being moved is the right type for a type 1 transaction.
+   * @param transaction The transaction to validate.
+   */
+  private def rightOutputType(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] =
+    transaction.outputs.headOption
+      .map(x => (x.value.value, x.address))
+      .fold((TransactionSyntaxError.InvalidAccountLedgerOutputNumber: TransactionSyntaxError).invalidNec[Unit]) {
+        case (
+              Value.Value.Asset(Value.Asset(someGroupId, someSeriesId, Int128(_, _), _, _, _, _, _, _, _)),
+              lockAddress
+            ) =>
+          val someAccountLedgerGroupId = lockAddress.network match {
+            case NetworkConstants.MAIN_NETWORK_ID    => Some(GroupPolicyAccountLedgerMainnetId)
+            case NetworkConstants.TEST_NETWORK_ID    => Some(GroupPolicyAccountLedgerTestnetId)
+            case NetworkConstants.PRIVATE_NETWORK_ID => Some(GroupPolicyAccountLedgerPrivateId)
+            case _                                   => None
+          }
+          val someAccountLedgerSeriesId = lockAddress.network match {
+            case NetworkConstants.MAIN_NETWORK_ID    => Some(SeriesPolicyAccountLedgerMainnetId)
+            case NetworkConstants.TEST_NETWORK_ID    => Some(SeriesPolicyAccountLedgerTestnetId)
+            case NetworkConstants.PRIVATE_NETWORK_ID => Some(SeriesPolicyAccountLedgerPrivateId)
+            case _                                   => None
+          }
+          ((someGroupId, someSeriesId, someAccountLedgerGroupId, someAccountLedgerSeriesId)
+            .mapN { (groupId, seriesId, expectedGroupId, expectedSeriesId) =>
+              Validated.condNec(
+                groupId.value.toByteArray
+                  .sameElements(expectedGroupId.value.toByteArray()) &&
+                seriesId.value.toByteArray.sameElements(expectedSeriesId.value.toByteArray()),
+                (),
+                TransactionSyntaxError.InvalidAccountLedgerAsset
+              )
+            })
+            .getOrElse(TransactionSyntaxError.InvalidTransactionType.invalidNec[Unit])
+        case _ =>
+          TransactionSyntaxError.InvalidAccountLedgerAsset.invalidNec[Unit]
+      }
+
+  /**
+   * Validate that the address is correct. An account ledger address must start with 12 zero bytes and be followed by
+   * by 20 bytes that represent the account identifier.
+   */
+  private def rightOutputAddressAccountLedger(transaction: IoTransaction): ValidatedNec[TransactionSyntaxError, Unit] =
+    transaction.outputs.headOption
+      .map(_.address)
+      .fold((TransactionSyntaxError.InvalidTransactionType: TransactionSyntaxError).invalidNec[Unit]) { lockAddress =>
+        Validated.condNec(
+          lockAddress.id.value.startsWith(ByteString.copyFrom(Array.fill(12)(0.toByte))),
+          (),
+          TransactionSyntaxError.InvalidAccountLedgerAddress
+        )
+
+      }
 
   /**
    * Verify that this transaction contains at least one input
@@ -84,6 +211,15 @@ object TransactionSyntaxInterpreter {
     transaction: IoTransaction
   ): ValidatedNec[TransactionSyntaxError, Unit] =
     Validated.condNec(transaction.outputs.size < Short.MaxValue, (), TransactionSyntaxError.ExcessiveOutputsCount)
+
+  /**
+   * Verify that this transaction contains exactly one output. This applies
+   * to transactions that send funds to the Ethereum-compatible network.
+   */
+  private def oneOutputCountValidation(
+    transaction: IoTransaction
+  ): ValidatedNec[TransactionSyntaxError, Unit] =
+    Validated.condNec(transaction.outputs.size == 1, (), TransactionSyntaxError.InvalidAccountLedgerOutputNumber)
 
   /**
    * Verify that the timestamp of the transaction is positive (greater than or equal to 0).  Transactions _can_ be created
@@ -308,9 +444,9 @@ object TransactionSyntaxInterpreter {
       minted <- tupleAndGroup(mintedAsset).toEither
       output <- tupleAndGroup(outputAssets).toEither
       keySetResult = input.keySet ++ minted.keySet == output.keySet
-      compareResult = output.keySet.forall(k =>
-        input.getOrElse(k, 0: BigInt) + minted.getOrElse(k, 0) == output.getOrElse(k, 0)
-      )
+      compareResult = output.keySet.forall { k =>
+        input.getOrElse(k, 0: BigInt) + minted.getOrElse(k, 0) >= output.getOrElse(k, 0)
+      }
     } yield (keySetResult && compareResult)
 
     Validated.condNec(
@@ -721,4 +857,5 @@ object TransactionSyntaxInterpreter {
       TransactionSyntaxError.InconsistentNetworkIDs(distinctNetworkIds.toSet)
     )
   }
+
 }
